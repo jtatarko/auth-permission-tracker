@@ -27,6 +27,7 @@ const Navigation: React.FC = () => {
       <CardContent className="p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-sm">
+            <img src="/logos/Adverity_Brandmark.svg" />
             {/* <Home className="h-5 w-5 text-blue-600" /> */}
             <span>Adverity Permissions Demo</span>
           </div>
