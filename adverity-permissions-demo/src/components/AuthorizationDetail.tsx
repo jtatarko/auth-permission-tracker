@@ -180,7 +180,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
 
               <Separator />
 
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
                     <div className="text-2xl font-bold text-blue-600">
@@ -202,7 +202,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                   <Eye className="h-4 w-4" />
                   <span>View changes</span>
                 </Button>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </div>
@@ -232,8 +232,8 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                         }
                         className={`text-xs ${
                           change.action === "Added"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                            ? "bg-blue-50 text-blue-800"
+                            : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
                         {change.action}

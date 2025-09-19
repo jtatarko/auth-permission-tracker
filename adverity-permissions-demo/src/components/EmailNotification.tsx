@@ -71,7 +71,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
           </CardHeader>
           <CardContent>
             <Table>
-              <TableHeader>
+              <TableHeader className="text-xs">
                 <TableRow>
                   <TableHead>Authorization</TableHead>
                   <TableHead>Workspace</TableHead>
@@ -85,12 +85,11 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               </TableHeader>
               <TableBody>
                 {permissionChanges.slice(0, 10).map((change) => (
-                  <TableRow key={change.id}>
-                    <TableCell className="font-medium">
+                  <TableRow key={change.id} className="text-gray-500">
+                    <TableCell className="font-medium text-black">
                       {change.authorizationId
                         .replace("auth-", "")
-                        .replace(/-/g, " ")
-                        .toUpperCase()}
+                        .replace(/-/g, " ")}
                     </TableCell>
                     <TableCell>{change.workspace}</TableCell>
                     <TableCell>{change.dataSource}</TableCell>
@@ -101,14 +100,14 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                         }
                         className={
                           change.action === "Added"
-                            ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                            ? "bg-blue-50 text-blue-800 hover:bg-blue-200"
                             : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                         }
                       >
                         {change.action}
                       </Badge>
                     </TableCell>
-                    <TableCell className="max-w-xs truncate">
+                    <TableCell className="max-w-xs truncate text-black">
                       {change.permissionName}
                     </TableCell>
                     {/* <TableCell className="text-sm text-gray-600">

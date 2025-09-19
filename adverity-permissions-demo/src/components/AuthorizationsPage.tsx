@@ -27,7 +27,7 @@ import {
   getDateRange,
 } from "@/utils/date-utils";
 import { exportAuthorizationsToCSV } from "@/utils/csv-export";
-import PermissionsChart from "./PermissionsChart";
+import AnalyticsContainer from "./AnalyticsContainer";
 import ExportModal from "./ExportModal";
 import {
   Search,
@@ -235,8 +235,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
         </p>
       </div>
 
-      {/* Permissions Chart */}
-      <PermissionsChart
+      {/* Analytics Dashboard */}
+      <AnalyticsContainer
         className="z-20"
         permissionChanges={permissionChanges}
         dateRange={state.chartDateRange}
@@ -425,7 +425,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                       onClick={() => handleSort("name")}
                       className="h-auto p-0 font-semibold"
                     >
-                      Name
+                      Authorization
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
@@ -462,8 +462,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
-                  <TableHead>Permissions</TableHead>
-                  <TableHead>Datastreams</TableHead>
+                  <TableHead className="text-xs">Permissions</TableHead>
+                  <TableHead className="text-xs">Datastreams</TableHead>
                   <TableHead>
                     <Button
                       variant="ghost"

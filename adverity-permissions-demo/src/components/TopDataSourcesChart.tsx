@@ -1,12 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PermissionChange } from "@/data/types";
 import { isWithinInterval } from "date-fns";
@@ -154,55 +147,11 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
     return null;
   };
 
-  const CustomLegend = (props: any) => {
-    const { payload } = props;
-    return (
-      <div className="flex flex-col space-y-2 mt-4">
-        {payload.map((entry: any, index: number) => {
-          const data = chartData.find((d) => d.name === entry.value);
-          return (
-            <div
-              key={index}
-              className="flex items-center justify-between text-xs"
-            >
-              <div className="flex items-center space-x-2">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: entry.color }}
-                />
-                <div className="flex items-center space-x-1">
-                  {getDataSourceIcon(entry.value).endsWith(".svg") ? (
-                    <img
-                      src={getDataSourceIcon(entry.value)}
-                      alt={entry.value}
-                      className="w-3 h-3"
-                    />
-                  ) : (
-                    <span className="text-xs">
-                      {getDataSourceIcon(entry.value)}
-                    </span>
-                  )}
-                  <span className="text-gray-700">{entry.value}</span>
-                </div>
-              </div>
-              <div className="flex space-x-3">
-                <span className="text-gray-600">{data?.total || 0}</span>
-                <span className="text-gray-500">
-                  ({data?.percentage || 0}%)
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="text-lg">
-          Permission changes by data source
+        <CardTitle className="text-gray-500 font-normal">
+          By data source
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -214,10 +163,11 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
             </div>
           </div>
         ) : (
-          <div className="h-64">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
+                  className="opacity-80"
                   data={chartData}
                   cx="50%"
                   cy="50%"
@@ -231,7 +181,6 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
-                {/* <Legend content={<CustomLegend />} /> */}
               </PieChart>
             </ResponsiveContainer>
           </div>

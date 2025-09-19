@@ -1,53 +1,73 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import type { PermissionsDrawerProps } from '@/data/types';
-import { getPermissionChangesForAuth } from '@/data/dummy-data';
-import { formatDateTime, formatDateForInput, isDateInRange } from '@/utils/date-utils';
-import { exportPermissionChangesToCSV } from '@/utils/csv-export';
-import { Search, Download, Calendar, ArrowUpDown } from 'lucide-react';
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { PermissionsDrawerProps } from "@/data/types";
+import { getPermissionChangesForAuth } from "@/data/dummy-data";
+import {
+  formatDateTime,
+  formatDateForInput,
+  isDateInRange,
+} from "@/utils/date-utils";
+import { exportPermissionChangesToCSV } from "@/utils/csv-export";
+import { Search, Download, Calendar, ArrowUpDown } from "lucide-react";
 
 const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
   isOpen,
   onClose,
   authorizationId,
   initialDateRange,
-  initialFilters
+  initialFilters,
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [actionFilter, setActionFilter] = useState<'All' | 'Added' | 'Removed'>(
-    initialFilters?.action || 'All'
+  const [searchTerm, setSearchTerm] = useState("");
+  const [actionFilter, setActionFilter] = useState<"All" | "Added" | "Removed">(
+    initialFilters?.action || "All"
   );
   const [dateRange, setDateRange] = useState(
     initialDateRange || {
       from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-      to: new Date()
+      to: new Date(),
     }
   );
-  const [sortBy, setSortBy] = useState<'dateTime' | 'action' | 'permissionName'>('dateTime');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortBy, setSortBy] = useState<
+    "dateTime" | "action" | "permissionName"
+  >("dateTime");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   // Get permission changes for this authorization
   const allPermissionChanges = getPermissionChangesForAuth(authorizationId);
 
   // Filter and sort permission changes
   const filteredChanges = useMemo(() => {
-    let filtered = allPermissionChanges.filter(change => {
+    let filtered = allPermissionChanges.filter((change) => {
       // Date range filter
       if (!isDateInRange(change.dateTime, dateRange)) return false;
 
       // Action filter
-      if (actionFilter !== 'All' && change.action !== actionFilter) return false;
+      if (actionFilter !== "All" && change.action !== actionFilter)
+        return false;
 
       // Search filter
       if (searchTerm) {
@@ -55,7 +75,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
         return (
           change.permissionName.toLowerCase().includes(searchLower) ||
           change.id.toLowerCase().includes(searchLower) ||
-          change.datastreamNames.some(name =>
+          change.datastreamNames.some((name) =>
             name.toLowerCase().includes(searchLower)
           )
         );
@@ -69,15 +89,15 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
       let aVal: any, bVal: any;
 
       switch (sortBy) {
-        case 'dateTime':
+        case "dateTime":
           aVal = a.dateTime.getTime();
           bVal = b.dateTime.getTime();
           break;
-        case 'action':
+        case "action":
           aVal = a.action;
           bVal = b.action;
           break;
-        case 'permissionName':
+        case "permissionName":
           aVal = a.permissionName.toLowerCase();
           bVal = b.permissionName.toLowerCase();
           break;
@@ -86,7 +106,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
           bVal = b.dateTime.getTime();
       }
 
-      if (sortOrder === 'asc') {
+      if (sortOrder === "asc") {
         return aVal > bVal ? 1 : -1;
       } else {
         return aVal < bVal ? 1 : -1;
@@ -94,34 +114,41 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
     });
 
     return filtered;
-  }, [allPermissionChanges, dateRange, actionFilter, searchTerm, sortBy, sortOrder]);
+  }, [
+    allPermissionChanges,
+    dateRange,
+    actionFilter,
+    searchTerm,
+    sortBy,
+    sortOrder,
+  ]);
 
   const handleSort = (field: typeof sortBy) => {
     if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortBy(field);
-      setSortOrder('desc');
+      setSortOrder("desc");
     }
   };
 
   const handleExport = () => {
     exportPermissionChangesToCSV(filteredChanges, {
-      includeAdded: actionFilter === 'All' || actionFilter === 'Added',
-      includeRemoved: actionFilter === 'All' || actionFilter === 'Removed',
-      dateRange
+      includeAdded: actionFilter === "All" || actionFilter === "Added",
+      includeRemoved: actionFilter === "All" || actionFilter === "Removed",
+      dateRange,
     });
   };
 
   const handleDatastreamClick = (datastreamName: string) => {
     // In a real app, this would navigate to the datastream details
-    console.log('Navigate to datastream:', datastreamName);
+    console.log("Navigate to datastream:", datastreamName);
   };
 
   // Reset filters when drawer opens with new auth or initial filters
   useEffect(() => {
     if (isOpen) {
-      setActionFilter(initialFilters?.action || 'All');
+      setActionFilter(initialFilters?.action || "All");
       if (initialDateRange) {
         setDateRange(initialDateRange);
       }
@@ -144,22 +171,32 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
             {/* Date Range */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">From Date</label>
+                <label className="block text-sm font-medium mb-1">
+                  From Date
+                </label>
                 <Input
                   type="date"
                   value={formatDateForInput(dateRange.from)}
                   onChange={(e) =>
-                    setDateRange(prev => ({ ...prev, from: new Date(e.target.value) }))
+                    setDateRange((prev) => ({
+                      ...prev,
+                      from: new Date(e.target.value),
+                    }))
                   }
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">To Date</label>
+                <label className="block text-sm font-medium mb-1">
+                  To Date
+                </label>
                 <Input
                   type="date"
                   value={formatDateForInput(dateRange.to)}
                   onChange={(e) =>
-                    setDateRange(prev => ({ ...prev, to: new Date(e.target.value) }))
+                    setDateRange((prev) => ({
+                      ...prev,
+                      to: new Date(e.target.value),
+                    }))
                   }
                 />
               </div>
@@ -169,7 +206,10 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Action</label>
-                <Select value={actionFilter} onValueChange={(value: any) => setActionFilter(value)}>
+                <Select
+                  value={actionFilter}
+                  onValueChange={(value: any) => setActionFilter(value)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -222,7 +262,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleSort('dateTime')}
+                      onClick={() => handleSort("dateTime")}
                       className="h-auto p-0 font-semibold"
                     >
                       Date & Time
@@ -233,7 +273,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleSort('action')}
+                      onClick={() => handleSort("action")}
                       className="h-auto p-0 font-semibold"
                     >
                       Action
@@ -244,7 +284,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleSort('permissionName')}
+                      onClick={() => handleSort("permissionName")}
                       className="h-auto p-0 font-semibold"
                     >
                       Permission Name
@@ -263,11 +303,13 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={change.action === 'Added' ? 'default' : 'destructive'}
+                        variant={
+                          change.action === "Added" ? "default" : "destructive"
+                        }
                         className={
-                          change.action === 'Added'
-                            ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                            : 'bg-red-100 text-red-800 hover:bg-red-200'
+                          change.action === "Added"
+                            ? "bg-blue-50 text-blue-800 hover:bg-blue-200"
+                            : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                         }
                       >
                         {change.action}
@@ -284,18 +326,21 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                     <TableCell>
                       <div className="space-y-1">
                         <div className="text-sm font-medium">
-                          {change.usedInDatastreams} datastream{change.usedInDatastreams !== 1 ? 's' : ''}
+                          {change.usedInDatastreams} datastream
+                          {change.usedInDatastreams !== 1 ? "s" : ""}
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {change.datastreamNames.slice(0, 2).map((name, idx) => (
-                            <button
-                              key={idx}
-                              onClick={() => handleDatastreamClick(name)}
-                              className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition-colors"
-                            >
-                              {name}
-                            </button>
-                          ))}
+                          {change.datastreamNames
+                            .slice(0, 2)
+                            .map((name, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => handleDatastreamClick(name)}
+                                className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition-colors"
+                              >
+                                {name}
+                              </button>
+                            ))}
                           {change.datastreamNames.length > 2 && (
                             <span className="text-xs text-gray-500 px-2 py-1">
                               +{change.datastreamNames.length - 2} more

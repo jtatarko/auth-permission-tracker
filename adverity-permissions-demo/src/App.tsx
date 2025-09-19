@@ -6,7 +6,6 @@ import {
   Navigate,
   useNavigate,
   useParams,
-  useLocation,
 } from "react-router-dom";
 import EmailNotification from "./components/EmailNotification";
 import AuthorizationsPage from "./components/AuthorizationsPage";
@@ -79,17 +78,14 @@ function AuthorizationDetailWrapper() {
 
 // Layout wrapper with navigation
 function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
-  const showNavigation = !location.pathname.startsWith("/authorization/");
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {showNavigation && (
-        <div className="container">
-          <Navigation />
-        </div>
-      )}
-      {children}
+      <div className="container">
+        <Navigation />
+      </div>
+      <div className="pb-20">
+        {children}
+      </div>
     </div>
   );
 }
