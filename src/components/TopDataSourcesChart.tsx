@@ -125,11 +125,11 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
           </div>
           <div className="space-y-1 text-xs">
             <div className="flex justify-between">
-              <span className="text-gray-600">Total changes:</span>
+              <span className="text-gray-600">All changes:</span>
               <span className="font-medium">{data.total}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-blue-600">Added:</span>
+              <span className="text-black">Added:</span>
               <span className="font-medium">{data.added}</span>
             </div>
             <div className="flex justify-between">

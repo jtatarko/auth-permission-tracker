@@ -115,12 +115,12 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
       </nav>
 
       {/* Authorization Header */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      <div className="flex gap-4">
+        <div>
           <Card>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
+                <div className="flex">
                   {getDataSourceIcon(authorization.type).endsWith(".svg") ? (
                     <img
                       src={getDataSourceIcon(authorization.type)}
@@ -147,28 +147,26 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-2">
                 <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-gray-500" />
+                  {/* <Database className="h-4 w-4 text-gray-500" /> */}
+                  <span className="text-sm text-gray-600">ID</span>
+                  <span className="font-mono text-sm">{authorization.id}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {/* <Users className="h-4 w-4 text-gray-500" /> */}
                   <span className="text-sm text-gray-600">Workspace</span>
                   <span className="font-medium">{authorization.workspace}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  {/* <Calendar className="h-4 w-4 text-gray-500" /> */}
                   <span className="text-sm text-gray-600">Created</span>
                   <span className="font-medium">
                     {formatDateShort(authorization.created)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Database className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">
-                    Authorization ID
-                  </span>
-                  <span className="font-mono text-sm">{authorization.id}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Activity className="h-4 w-4 text-gray-500" />
+                  {/* <Activity className="h-4 w-4 text-gray-500" /> */}
                   <span className="text-sm text-gray-600">Last edited</span>
                   <span className="font-medium">
                     {authorization.lastUsed
@@ -178,9 +176,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                 </div>
               </div>
 
-              <Separator />
+              {/* <Separator /> */}
 
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
                     <div className="text-2xl font-bold text-blue-600">
@@ -195,63 +193,91 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                     <div className="text-sm text-gray-600">Datastreams</div>
                   </div>
                 </div>
-                <Button
-                  onClick={handleViewChanges}
-                  className="flex items-center space-x-2"
-                >
-                  <Eye className="h-4 w-4" />
-                  <span>View changes</span>
-                </Button>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </div>
 
-        {/* Recent Activity */}
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Recent Changes</CardTitle>
-              <CardDescription>Latest permission modifications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {recentChanges.length === 0 ? (
-                <p className="text-sm text-gray-500 text-center py-4">
-                  No recent changes
-                </p>
-              ) : (
-                <div className="space-y-3">
-                  {recentChanges.map((change) => (
-                    <div
-                      key={change.id}
-                      className="flex items-start space-x-3 text-sm"
+        {/* Used by Datastreams */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">
+              Used by {authorization.datastreamsCount} Datastreams
+            </CardTitle>
+            {/* <CardDescription>
+            This authorization is currently being used by the following
+            datastreams
+          </CardDescription> */}
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {sampleDatastreams.map((datastream, index) => (
+                <button
+                  key={index}
+                  className="p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={() =>
+                    console.log("Navigate to datastream:", datastream)
+                  }
+                >
+                  <div className="flex items-center space-x-2">
+                    <Database className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium text-sm">{datastream}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Active • Last run 2 hours ago
+                  </p>
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent Activity */}
+      <div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Latest permission changes</CardTitle>
+            {/* <CardDescription>Latest permission modifications</CardDescription> */}
+          </CardHeader>
+          <CardContent>
+            {recentChanges.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">
+                No recent changes
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {recentChanges.map((change) => (
+                  <div
+                    key={change.id}
+                    className="flex items-start space-x-3 text-sm"
+                  >
+                    <Badge
+                      variant={
+                        change.action === "Added" ? "default" : "destructive"
+                      }
+                      className={`text-xs h-4 ${
+                        change.action === "Added"
+                          ? "bg-blue-50 text-blue-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
                     >
-                      <Badge
-                        variant={
-                          change.action === "Added" ? "default" : "destructive"
-                        }
-                        className={`text-xs ${
-                          change.action === "Added"
-                            ? "bg-blue-50 text-blue-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
+                      {change.action}
+                    </Badge>
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-gray-900 truncate"
+                        title={change.permissionName}
                       >
-                        {change.action}
-                      </Badge>
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className="text-gray-900 truncate"
-                          title={change.permissionName}
-                        >
-                          {change.permissionName}
-                        </p>
-                        <p className="text-gray-500 text-xs">
-                          {formatRelativeTime(change.dateTime)}
-                        </p>
-                      </div>
+                        {change.permissionName}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        {formatRelativeTime(change.dateTime)}
+                      </p>
                     </div>
-                  ))}
-                  {permissionChanges.length > 5 && (
+                  </div>
+                ))}
+                {/* {permissionChanges.length > 5 && (
                     <Button
                       variant="outline"
                       size="sm"
@@ -260,50 +286,23 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                     >
                       View all {permissionChanges.length} changes
                     </Button>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                  )} */}
+              </div>
+            )}
+            <Button
+              size="sm"
+              onClick={handleViewChanges}
+              className="w-full flex items-center space-x-2 mt-4"
+            >
+              {/* <Eye className="h-4 w-4" /> */}
+              <span>View details</span>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Used by Datastreams */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">
-            Used by {authorization.datastreamsCount} Datastreams
-          </CardTitle>
-          <CardDescription>
-            This authorization is currently being used by the following
-            datastreams
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {sampleDatastreams.map((datastream, index) => (
-              <button
-                key={index}
-                className="p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
-                onClick={() =>
-                  console.log("Navigate to datastream:", datastream)
-                }
-              >
-                <div className="flex items-center space-x-2">
-                  <Database className="h-4 w-4 text-blue-600" />
-                  <span className="font-medium text-sm">{datastream}</span>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Active • Last run 2 hours ago
-                </p>
-              </button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Settings */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
             <Settings className="h-5 w-5" />
@@ -333,7 +332,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Permissions Drawer */}
       <PermissionsDrawer
