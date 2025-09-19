@@ -21,7 +21,9 @@ import { Button } from "@/components/ui/button";
 import type { PermissionChange } from "@/data/types";
 import { format, startOfDay, addDays, isWithinInterval } from "date-fns";
 import { formatDateForInput } from "@/utils/date-utils";
+import { authorizations } from "@/data/dummy-data";
 import { Calendar } from "lucide-react";
+import TopDataSourcesChart from "./TopDataSourcesChart";
 
 interface PermissionsChartProps {
   permissionChanges: PermissionChange[];
@@ -30,18 +32,27 @@ interface PermissionsChartProps {
   className?: string;
 }
 
+interface AuthorizationChange {
+  authId: string;
+  authName: string;
+  authType: string;
+  count: number;
+}
+
 interface ChartDataPoint {
   date: string;
   added: number;
   removed: number;
   total: number;
+  addedAuthorizations: AuthorizationChange[];
+  removedAuthorizations: AuthorizationChange[];
 }
 
 const PermissionsChart: React.FC<PermissionsChartProps> = ({
   permissionChanges,
   dateRange,
   onDateRangeChange,
-  className = "",
+  className = "overflow-visible",
 }) => {
   const chartData = useMemo(() => {
     const data: ChartDataPoint[] = [];
@@ -59,14 +70,43 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
         isWithinInterval(change.dateTime, { start: dayStart, end: dayEnd })
       );
 
-      const added = dayChanges.filter((c) => c.action === "Added").length;
-      const removed = dayChanges.filter((c) => c.action === "Removed").length;
+      const addedChanges = dayChanges.filter((c) => c.action === "Added");
+      const removedChanges = dayChanges.filter((c) => c.action === "Removed");
+
+      // Group by authorization and count changes
+      const groupChangesByAuth = (changes: PermissionChange[]) => {
+        const authGroups: { [authId: string]: AuthorizationChange } = {};
+
+        changes.forEach((change) => {
+          const auth = authorizations.find(
+            (a) => a.id === change.authorizationId
+          );
+          if (auth) {
+            if (!authGroups[auth.id]) {
+              authGroups[auth.id] = {
+                authId: auth.id,
+                authName: auth.name,
+                authType: auth.type,
+                count: 0,
+              };
+            }
+            authGroups[auth.id].count++;
+          }
+        });
+
+        return Object.values(authGroups).sort((a, b) => b.count - a.count);
+      };
+
+      const addedAuthorizations = groupChangesByAuth(addedChanges);
+      const removedAuthorizations = groupChangesByAuth(removedChanges);
 
       data.push({
         date: format(currentDate, "MMM d"),
-        added,
-        removed,
-        total: added + removed,
+        added: addedChanges.length,
+        removed: removedChanges.length,
+        total: addedChanges.length + removedChanges.length,
+        addedAuthorizations,
+        removedAuthorizations,
       });
 
       currentDate = addDays(currentDate, 1);
@@ -79,34 +119,124 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
   const totalRemoved = chartData.reduce((sum, day) => sum + day.removed, 0);
   const maxValue = Math.max(...chartData.map((d) => d.total));
 
+  const getDataSourceIcon = (type: string) => {
+    switch (type) {
+      case "Meta":
+        return "/logos/meta-symbol.svg";
+      case "Google Ads":
+        return "/logos/google-ads-symbol.svg";
+      case "Amazon Advertising":
+        return "/logos/amazon-symbol.svg";
+      case "Google Sheets":
+        return "/logos/google-sheets-symbol.svg";
+      case "LinkedIn Ads":
+        return "/logos/linkedin-symbol.svg";
+      case "TikTok Ads":
+        return "/logos/tiktok-symbol.svg";
+      case "Twitter Ads":
+        return "/logos/twitter-x-symbol.svg";
+      default:
+        return "🔗";
+    }
+  };
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      const data = payload[0]?.payload as ChartDataPoint;
+      const totalChanges = data.total;
+
       return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-          <p className="font-medium text-gray-900">{label}</p>
-          <div className="space-y-1 mt-2">
-            {payload.map((entry: any) => (
-              <div
-                key={entry.dataKey}
-                className="flex items-center space-x-2 text-sm"
-              >
-                <div
-                  className="w-3 h-3 rounded"
-                  style={{ backgroundColor: entry.color }}
-                />
-                <span className="text-gray-600 capitalize">
-                  {entry.dataKey}:
+        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs z-[9999] relative">
+          <p className="font-semibold text-gray-900 text-sm mb-2">{label}</p>
+
+          {/* Added Section */}
+          {data.added > 0 && (
+            <div className="mb-3">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-3 h-3 rounded bg-blue-400" />
+                <span className="text-sm font-medium text-gray-700">
+                  Added ({data.added}):
                 </span>
-                <span className="font-medium">{entry.value}</span>
               </div>
-            ))}
-            <div className="border-t pt-1 mt-1">
-              <div className="flex items-center space-x-2 text-sm font-medium">
-                <span className="text-gray-600">Total:</span>
-                <span>{payload[0]?.payload?.total || 0}</span>
+              <div className="space-y-1 ml-5">
+                {data.addedAuthorizations.slice(0, 5).map((auth, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center space-x-2 text-xs"
+                  >
+                    {getDataSourceIcon(auth.authType).endsWith(".svg") ? (
+                      <img
+                        src={getDataSourceIcon(auth.authType)}
+                        alt={auth.authType}
+                        className="w-3 h-3"
+                      />
+                    ) : (
+                      <span className="text-xs">
+                        {getDataSourceIcon(auth.authType)}
+                      </span>
+                    )}
+                    <span className="text-gray-600 truncate">
+                      {auth.authName}: +{auth.count} permission
+                      {auth.count !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+                ))}
+                {data.addedAuthorizations.length > 5 && (
+                  <div className="text-xs text-gray-500 ml-5">
+                    +{data.addedAuthorizations.length - 5} more authorization
+                    {data.addedAuthorizations.length - 5 !== 1 ? "s" : ""}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Removed Section */}
+          {data.removed > 0 && (
+            <div className="mb-2">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-3 h-3 rounded bg-yellow-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Removed ({data.removed}):
+                </span>
+              </div>
+              <div className="space-y-1 ml-5">
+                {data.removedAuthorizations.slice(0, 5).map((auth, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center space-x-2 text-xs"
+                  >
+                    {getDataSourceIcon(auth.authType).endsWith(".svg") ? (
+                      <img
+                        src={getDataSourceIcon(auth.authType)}
+                        alt={auth.authType}
+                        className="w-3 h-3"
+                      />
+                    ) : (
+                      <span className="text-xs">
+                        {getDataSourceIcon(auth.authType)}
+                      </span>
+                    )}
+                    <span className="text-gray-600 truncate">
+                      {auth.authName}: -{auth.count} permission
+                      {auth.count !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+                ))}
+                {data.removedAuthorizations.length > 5 && (
+                  <div className="text-xs text-gray-500 ml-5">
+                    +{data.removedAuthorizations.length - 5} more authorization
+                    {data.removedAuthorizations.length - 5 !== 1 ? "s" : ""}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* No changes message */}
+          {data.removed === 0 && data.added === 0 && (
+            <p className="text-xs text-gray-500">(no changes)</p>
+          )}
         </div>
       );
     }
@@ -114,174 +244,167 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
   };
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-lg">
-              Daily view of permission changes
-            </CardTitle>
-            {/* <CardDescription>
-              Daily view of permission additions and removals
-            </CardDescription> */}
-          </div>
-          <div className="grid grid-cols-2 gap-4 text-right">
+    <div className={`${className} overflow-visible space-y-6`}>
+      {/* Date Range Picker */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Permission Changes Analytics</CardTitle>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <div className="text-lg font-bold text-blue-400">
-                {totalAdded}
-              </div>
-              <div className="text-xs text-gray-600">Added</div>
+              <label className="block text-sm font-medium mb-1">From</label>
+              <Input
+                type="date"
+                value={formatDateForInput(dateRange.from)}
+                onChange={(e) =>
+                  onDateRangeChange({
+                    ...dateRange,
+                    from: new Date(e.target.value),
+                  })
+                }
+                className="text-sm"
+              />
             </div>
             <div>
-              <div className="text-lg font-bold text-yellow-600">
-                {totalRemoved}
-              </div>
-              <div className="text-xs text-gray-600">Removed</div>
+              <label className="block text-sm font-medium mb-1">To</label>
+              <Input
+                type="date"
+                value={formatDateForInput(dateRange.to)}
+                onChange={(e) =>
+                  onDateRangeChange({
+                    ...dateRange,
+                    to: new Date(e.target.value),
+                  })
+                }
+                className="text-sm"
+              />
             </div>
-          </div>
-        </div>
-
-        {/* Date Range Picker */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">From</label>
-            <Input
-              type="date"
-              value={formatDateForInput(dateRange.from)}
-              onChange={(e) =>
-                onDateRangeChange({
-                  ...dateRange,
-                  from: new Date(e.target.value),
-                })
-              }
-              className="text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">To</label>
-            <Input
-              type="date"
-              value={formatDateForInput(dateRange.to)}
-              onChange={(e) =>
-                onDateRangeChange({
-                  ...dateRange,
-                  to: new Date(e.target.value),
-                })
-              }
-              className="text-sm"
-            />
-          </div>
-          <div className="flex items-end gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                const now = new Date();
-                const thirtyDaysAgo = new Date(
-                  now.getTime() - 30 * 24 * 60 * 60 * 1000
-                );
-                onDateRangeChange({ from: thirtyDaysAgo, to: now });
-              }}
-              className="text-xs"
-            >
-              Last 30 days
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                const now = new Date();
-                const ninetyDaysAgo = new Date(
-                  now.getTime() - 90 * 24 * 60 * 60 * 1000
-                );
-                onDateRangeChange({ from: ninetyDaysAgo, to: now });
-              }}
-              className="text-xs"
-            >
-              Last 90 days
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="h-40 w-full">
-          {chartData.length === 0 || maxValue === 0 ? (
-            <div className="flex items-center justify-center h-full text-gray-500">
-              <div className="text-center">
-                <div className="text-4xl mb-2">📊</div>
-                <p>No permission changes in selected date range</p>
-              </div>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={chartData}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
+            <div className="flex items-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const now = new Date();
+                  const thirtyDaysAgo = new Date(
+                    now.getTime() - 30 * 24 * 60 * 60 * 1000
+                  );
+                  onDateRangeChange({ from: thirtyDaysAgo, to: now });
                 }}
+                className="text-xs"
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="date"
-                  tick={{ fontSize: 12 }}
-                  tickLine={{ stroke: "#e0e0e0" }}
-                  axisLine={{ stroke: "#e0e0e0" }}
-                />
-                <YAxis
-                  tick={{ fontSize: 12 }}
-                  tickLine={{ stroke: "#e0e0e0" }}
-                  axisLine={{ stroke: "#e0e0e0" }}
-                  domain={[0, maxValue]}
-                />
-                <Tooltip
-                  content={<CustomTooltip />}
-                  cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
-                />
-                <Bar
-                  dataKey="added"
-                  stackId="a"
-                  fill="#A0C0FF"
-                  name="Added"
-                  radius={[0, 0, 4, 4]}
-                />
-                <Bar
-                  dataKey="removed"
-                  stackId="a"
-                  fill="#eab308"
-                  name="Removed"
-                  radius={[2, 2, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </div>
+                Last 30 days
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const now = new Date();
+                  const ninetyDaysAgo = new Date(
+                    now.getTime() - 90 * 24 * 60 * 60 * 1000
+                  );
+                  onDateRangeChange({ from: ninetyDaysAgo, to: now });
+                }}
+                className="text-xs"
+              >
+                Last 90 days
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
 
-        {/* Summary stats */}
-        {/* <div className="mt-4 pt-4 border-t grid grid-cols-3 gap-4 text-center">
-          <div>
-            <div className="text-lg font-bold text-gray-900">
-              {totalAdded + totalRemoved}
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Daily View Chart - 3/5 width */}
+        <Card className="lg:col-span-3 overflow-visible">
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-lg">
+                  Daily view of permission changes
+                </CardTitle>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-right">
+                <div>
+                  <div className="text-lg font-bold text-blue-400">
+                    {totalAdded}
+                  </div>
+                  <div className="text-xs text-gray-600">Added</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-yellow-600">
+                    {totalRemoved}
+                  </div>
+                  <div className="text-xs text-gray-600">Removed</div>
+                </div>
+              </div>
             </div>
-            <div className="text-sm text-gray-600">Total Changes</div>
-          </div>
-          <div>
-            <div className="text-lg font-bold text-gray-900">
-              {Math.round(
-                ((totalAdded + totalRemoved) / chartData.length) * 10
-              ) / 10}
+          </CardHeader>
+          <CardContent className="overflow-visible">
+            <div className="h-40 w-full overflow-visible">
+              {chartData.length === 0 || maxValue === 0 ? (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📊</div>
+                    <p>No permission changes in selected date range</p>
+                  </div>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={chartData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fontSize: 12 }}
+                      tickLine={{ stroke: "#e0e0e0" }}
+                      axisLine={{ stroke: "#e0e0e0" }}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 12 }}
+                      tickLine={{ stroke: "#e0e0e0" }}
+                      axisLine={{ stroke: "#e0e0e0" }}
+                      domain={[0, maxValue]}
+                    />
+                    <Tooltip
+                      content={<CustomTooltip />}
+                      cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
+                    />
+                    <Bar
+                      dataKey="added"
+                      stackId="a"
+                      fill="#A0C0FF"
+                      name="Added"
+                      radius={[0, 0, 4, 4]}
+                    />
+                    <Bar
+                      dataKey="removed"
+                      stackId="a"
+                      fill="#eab308"
+                      name="Removed"
+                      radius={[2, 2, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
-            <div className="text-sm text-gray-600">Avg per Day</div>
-          </div>
-          <div>
-            <div className="text-lg font-bold text-gray-900">{maxValue}</div>
-            <div className="text-sm text-gray-600">Peak Day</div>
-          </div>
-        </div> */}
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+
+        {/* Top Data Sources Chart - 2/5 width */}
+        <TopDataSourcesChart
+          className="lg:col-span-2"
+          permissionChanges={permissionChanges}
+          dateRange={dateRange}
+        />
+      </div>
+    </div>
   );
 };
 

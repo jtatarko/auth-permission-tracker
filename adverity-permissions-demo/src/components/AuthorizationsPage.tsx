@@ -237,6 +237,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
       {/* Permissions Chart */}
       <PermissionsChart
+        className="z-20"
         permissionChanges={permissionChanges}
         dateRange={state.chartDateRange}
         onDateRangeChange={handleChartDateRangeChange}
@@ -369,7 +370,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                       onClick={handleBulkExport}
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Export Selected
+                      Export Permission Changes
                     </Button>
                     <Button variant="outline" size="sm">
                       <RefreshCw className="h-4 w-4 mr-2" />
