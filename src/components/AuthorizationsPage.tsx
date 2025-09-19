@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -67,7 +67,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
   // Filter and sort authorizations
   const filteredAuthorizations = useMemo(() => {
-    let filtered = authorizations.filter((auth) => {
+    const filtered = authorizations.filter((auth) => {
       // Workspace filter
       if (
         state.filters.workspace !== "all" &&

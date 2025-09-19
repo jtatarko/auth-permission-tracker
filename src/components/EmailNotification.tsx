@@ -2,7 +2,6 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,7 +16,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { EmailNotificationProps } from "@/data/types";
-import { formatDate } from "@/utils/date-utils";
 import { authorizations } from "@/data/dummy-data";
 import { Mail, Clock } from "lucide-react";
 
@@ -35,14 +33,6 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
     return b.dateTime.getTime() - a.dateTime.getTime();
   });
 
-  // Group changes by authorization
-  const changesByAuth = sortedPermissionChanges.reduce((acc, change) => {
-    if (!acc[change.authorizationId]) {
-      acc[change.authorizationId] = [];
-    }
-    acc[change.authorizationId].push(change);
-    return acc;
-  }, {} as Record<string, typeof sortedPermissionChanges>);
 
   const today = new Date();
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
@@ -200,7 +190,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
           {/* <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-blue-600">
-                {Object.keys(changesByAuth).length}
+                {authorizations.length}
               </div>
               <div className="text-sm text-gray-600">
                 Authorizations Affected

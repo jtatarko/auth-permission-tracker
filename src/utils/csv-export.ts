@@ -1,4 +1,4 @@
-import type { PermissionChange, Authorization } from '@/data/types';
+import type { PermissionChange } from '@/data/types';
 import { formatDateTime } from './date-utils';
 import { authorizations } from '@/data/dummy-data';
 

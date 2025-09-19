@@ -7,12 +7,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -22,7 +20,6 @@ import type { PermissionChange } from "@/data/types";
 import { format, startOfDay, addDays, isWithinInterval } from "date-fns";
 import { formatDateForInput } from "@/utils/date-utils";
 import { authorizations } from "@/data/dummy-data";
-import { Calendar } from "lucide-react";
 import TopDataSourcesChart from "./TopDataSourcesChart";
 
 interface PermissionsChartProps {
@@ -143,7 +140,6 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0]?.payload as ChartDataPoint;
-      const totalChanges = data.total;
 
       return (
         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs z-[9999] relative">

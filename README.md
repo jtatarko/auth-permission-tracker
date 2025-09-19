@@ -2,7 +2,7 @@
 
 A browser-based demo application for user testing of Adverity's authorization permissions tracking system. This demo simulates the complete user flow from email notifications to detailed permission management without requiring a backend.
 
-## 🚀 Features
+## Features
 
 - **Email Notification View**: Daily permission changes summary with email-like styling
 - **Permissions Drawer**: Detailed permission history with filtering, search, and export
@@ -12,7 +12,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
 - **CSV Export**: Comprehensive export functionality for all data
 - **Responsive Design**: Works across desktop and mobile devices
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend Framework**: React 18+ with TypeScript
 - **UI Library**: shadcn/ui (https://ui.shadcn.com/)
@@ -22,7 +22,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
 - **Icons**: Lucide React
 - **Data**: Static dummy data (no backend required)
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 - Node.js 18+
@@ -50,7 +50,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
    http://localhost:5174 (or the port shown in terminal)
    ```
 
-## 🎯 User Flows
+##  User Flows
 
 ### Flow 1: Email → Authorization Detail → Drawer (Auto-opened)
 1. Start at `/email` - view daily email notification
@@ -116,7 +116,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
   - Sortable columns
   - CSV export
 
-## 📊 Data Models
+## Data Models
 
 The application uses comprehensive TypeScript interfaces:
 
@@ -129,7 +129,7 @@ Sample data includes:
 - **Permission Changes**: 100+ items spanning 30 days
 - **Datastreams**: Multiple per authorization with realistic naming
 
-## 🎨 UI Components
+##  UI Components
 
 Built with shadcn/ui components:
 - Tables with sorting and selection
@@ -138,7 +138,7 @@ Built with shadcn/ui components:
 - Charts and data visualization
 - Responsive cards and layouts
 
-## 📥 Export Features
+## Export Features
 
 ### Permission Changes Export
 - Filter by date range
@@ -151,7 +151,7 @@ Built with shadcn/ui components:
 - Complete authorization metadata
 - Usage statistics included
 
-## 🧪 Testing Scenarios
+## Testing Scenarios
 
 1. **Email Flow**: Starting from email notification to permission details
 2. **Bulk Operations**: Selecting multiple authorizations and performing actions
@@ -186,6 +186,23 @@ npm run tsc
 npm run lint
 ```
 
+## 🚀 Deployment
+
+### Vercel Deployment
+This project is configured for deployment on Vercel:
+
+- **Framework**: Automatically detected as Vite
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **SPA Routing**: Configured via `vercel.json`
+
+To deploy:
+1. Connect your GitHub repository to Vercel
+2. Import the project (settings will be auto-detected)
+3. Deploy
+
+The `vercel.json` configuration handles SPA routing by redirecting all routes to `index.html`.
+
 ## 🏗 Project Structure
 
 ```
@@ -217,7 +234,7 @@ The application is configured for:
 - Vite hot reload
 - Date-fns for date handling
 
-## 🤝 Contributing
+## Contributing
 
 This is a demo application for user testing. To modify:
 
@@ -226,7 +243,7 @@ This is a demo application for user testing. To modify:
 3. Adjust styling via Tailwind classes
 4. Add new routes in `App.tsx`
 
-## 📞 Support
+## Support
 
 For questions about this demo:
 - Review the component implementations

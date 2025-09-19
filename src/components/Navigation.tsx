@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Users, Home } from "lucide-react";
+import { Mail, Users } from "lucide-react";
 
 const Navigation: React.FC = () => {
-  const location = useLocation();
 
   const navItems = [
     {
@@ -35,7 +34,6 @@ const Navigation: React.FC = () => {
             <div className="mt-2 text-sm text-gray-600">Navigate between</div>
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path;
 
               return (
                 <Link key={item.path} to={item.path}>

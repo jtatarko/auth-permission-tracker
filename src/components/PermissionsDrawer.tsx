@@ -61,7 +61,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
 
   // Filter and sort permission changes
   const filteredChanges = useMemo(() => {
-    let filtered = allPermissionChanges.filter((change) => {
+    const filtered = allPermissionChanges.filter((change) => {
       // Date range filter
       if (!isDateInRange(change.dateTime, dateRange)) return false;
 
