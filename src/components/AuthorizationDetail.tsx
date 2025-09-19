@@ -132,7 +132,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                       {getDataSourceIcon(authorization.type)}
                     </div>
                   )}
-                  <div>
+                  <div className="pr-4">
                     <CardTitle className="text-xl">
                       {authorization.name}
                     </CardTitle>
@@ -147,7 +147,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 gap-2">
+              <div className="grid grid-cols-1 gap-2 text-sm">
                 <div className="flex items-center space-x-2">
                   {/* <Database className="h-4 w-4 text-gray-500" /> */}
                   <span className="text-sm text-gray-600">ID</span>
@@ -196,88 +196,78 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               </div> */}
             </CardContent>
           </Card>
-        </div>
 
-        {/* Used by Datastreams */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Used by {authorization.datastreamsCount} Datastreams
-            </CardTitle>
-            {/* <CardDescription>
-            This authorization is currently being used by the following
-            datastreams
-          </CardDescription> */}
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {sampleDatastreams.map((datastream, index) => (
-                <button
-                  key={index}
-                  className="p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
-                  onClick={() =>
-                    console.log("Navigate to datastream:", datastream)
-                  }
-                >
-                  <div className="flex items-center space-x-2">
-                    <Database className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium text-sm">{datastream}</span>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Active • Last run 2 hours ago
-                  </p>
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-md">Provide access to</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-1">
+              <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">
+                  Ads Budget Management 301
+                </p>
+              </div>
+              <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">Reporting API Access 01</p>
+              </div>
+              {/* <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">
+                  Ads Creative Management 22
+                </p>
+              </div> */}
+            </CardContent>
+          </Card>
 
-      {/* Recent Activity */}
-      <div>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Latest permission changes</CardTitle>
-            {/* <CardDescription>Latest permission modifications</CardDescription> */}
-          </CardHeader>
-          <CardContent>
-            {recentChanges.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">
-                No recent changes
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {recentChanges.map((change) => (
-                  <div
-                    key={change.id}
-                    className="flex items-start space-x-3 text-sm"
-                  >
-                    <Badge
-                      variant={
-                        change.action === "Added" ? "default" : "destructive"
-                      }
-                      className={`text-xs h-4 ${
-                        change.action === "Added"
-                          ? "bg-blue-50 text-blue-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-md">
+                Latest permission changes
+              </CardTitle>
+              {/* <CardDescription>Latest permission modifications</CardDescription> */}
+            </CardHeader>
+            <CardContent>
+              {recentChanges.length === 0 ? (
+                <p className="text-sm text-gray-500 text-center py-4">
+                  No recent changes
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  {recentChanges.map((change) => (
+                    <div
+                      key={change.id}
+                      className="flex items-start space-x-3 text-sm p-2 bg-gray-50 rounded-sm"
                     >
-                      {change.action}
-                    </Badge>
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="text-gray-900 truncate"
-                        title={change.permissionName}
-                      >
-                        {change.permissionName}
-                      </p>
-                      <p className="text-gray-500 text-xs">
-                        {formatRelativeTime(change.dateTime)}
-                      </p>
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="text-gray-900 truncate"
+                          title={change.permissionName}
+                        >
+                          {change.permissionName}
+                        </p>
+                        <p className="text-gray-500 text-xs">
+                          {formatRelativeTime(change.dateTime)}
+                        </p>
+                      </div>
+                      <div className="w-24">
+                        <Badge
+                          variant={
+                            change.action === "Added"
+                              ? "default"
+                              : "destructive"
+                          }
+                          className={`text-xs h-4 ${
+                            change.action === "Added"
+                              ? "bg-gray-100 text-gray-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {change.action}
+                        </Badge>
+                      </div>
                     </div>
-                  </div>
-                ))}
-                {/* {permissionChanges.length > 5 && (
+                  ))}
+                  {/* {permissionChanges.length > 5 && (
                     <Button
                       variant="outline"
                       size="sm"
@@ -287,16 +277,51 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                       View all {permissionChanges.length} changes
                     </Button>
                   )} */}
-              </div>
-            )}
-            <Button
-              size="sm"
-              onClick={handleViewChanges}
-              className="w-full flex items-center space-x-2 mt-4"
-            >
-              {/* <Eye className="h-4 w-4" /> */}
-              <span>View details</span>
-            </Button>
+                </div>
+              )}
+              <Button
+                size="sm"
+                onClick={handleViewChanges}
+                className="w-full flex items-center space-x-2 mt-4"
+              >
+                {/* <Eye className="h-4 w-4" /> */}
+                <span>View details</span>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Used by Datastreams */}
+        <Card className="shadow-none bg-transparent border-none w-2/3">
+          <CardHeader>
+            <CardTitle className="text-md">
+              Used by {authorization.datastreamsCount} Datastreams
+            </CardTitle>
+            {/* <CardDescription>
+            This authorization is currently being used by the following
+            datastreams
+          </CardDescription> */}
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-3">
+              {sampleDatastreams.map((datastream, index) => (
+                <button
+                  key={index}
+                  className="flex justify-between p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors bg-white"
+                  onClick={() =>
+                    console.log("Navigate to datastream:", datastream)
+                  }
+                >
+                  <div className="flex items-center space-x-2">
+                    {/* <Database className="h-4 w-4 text-blue-600" /> */}
+                    <span className="font-medium text-sm">{datastream}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Active • Last run 2 hours ago
+                  </p>
+                </button>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
