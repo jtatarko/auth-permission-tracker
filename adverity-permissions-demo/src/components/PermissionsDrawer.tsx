@@ -47,7 +47,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
   );
   const [dateRange, setDateRange] = useState(
     initialDateRange || {
-      from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      from: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
       to: new Date(),
     }
   );
@@ -160,16 +160,16 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
       <SheetContent className="w-full sm:max-w-4xl overflow-y-auto">
         <SheetHeader className="space-y-4">
           <div>
-            <SheetTitle className="text-xl">Permission Changes</SheetTitle>
-            <SheetDescription>
-              Detailed history of permission changes for this authorization
-            </SheetDescription>
+            <SheetTitle className="text-xl">
+              History of Permission Changes
+            </SheetTitle>
+            <SheetDescription>for the authorization</SheetDescription>
           </div>
 
           {/* Filters */}
           <div className="space-y-4 border-b pb-4">
             {/* Date Range */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">
                   From Date
@@ -200,11 +200,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                   }
                 />
               </div>
-            </div>
-
-            {/* Action Filter and Search */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+              <div className="min-w-40">
                 <label className="block text-sm font-medium mb-1">Action</label>
                 <Select
                   value={actionFilter}
@@ -220,7 +216,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="flex-grow w-full">
                 <label className="block text-sm font-medium mb-1">Search</label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -291,8 +287,8 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
-                  <TableHead>Permission ID</TableHead>
-                  <TableHead>Used in Datastreams</TableHead>
+                  <TableHead className="text-xs">Perm ID</TableHead>
+                  <TableHead className="text-xs">Used in Datastreams</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -308,7 +304,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                         }
                         className={
                           change.action === "Added"
-                            ? "bg-gray-50 text-gray-800 hover:bg-gray-200"
+                            ? "bg-gray-100 text-gray-800 hover:bg-gray-200"
                             : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                         }
                       >
