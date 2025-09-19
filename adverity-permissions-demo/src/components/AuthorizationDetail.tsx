@@ -136,9 +136,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                     <CardTitle className="text-xl">
                       {authorization.name}
                     </CardTitle>
-                    <CardDescription>
+                    {/* <CardDescription>
                       {authorization.type} Authorization
-                    </CardDescription>
+                    </CardDescription> */}
                   </div>
                 </div>
                 <Badge className={getStatusColor(authorization.status)}>
@@ -150,37 +150,37 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center space-x-2">
                   <Users className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">Workspace:</span>
+                  <span className="text-sm text-gray-600">Workspace</span>
                   <span className="font-medium">{authorization.workspace}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">Created:</span>
+                  <span className="text-sm text-gray-600">Created</span>
                   <span className="font-medium">
                     {formatDateShort(authorization.created)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
+                  <Database className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-600">
+                    Authorization ID
+                  </span>
+                  <span className="font-mono text-sm">{authorization.id}</span>
+                </div>
+                <div className="flex items-center space-x-2">
                   <Activity className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">Last used:</span>
+                  <span className="text-sm text-gray-600">Last edited</span>
                   <span className="font-medium">
                     {authorization.lastUsed
                       ? formatRelativeTime(authorization.lastUsed)
                       : "Never"}
                   </span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Database className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">
-                    Authorization ID:
-                  </span>
-                  <span className="font-mono text-sm">{authorization.id}</span>
-                </div>
               </div>
 
               <Separator />
 
-              {/* <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
                     <div className="text-2xl font-bold text-blue-600">
@@ -202,7 +202,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                   <Eye className="h-4 w-4" />
                   <span>View changes</span>
                 </Button>
-              </div> */}
+              </div>
             </CardContent>
           </Card>
         </div>

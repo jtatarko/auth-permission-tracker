@@ -308,7 +308,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                         }
                         className={
                           change.action === "Added"
-                            ? "bg-blue-50 text-blue-800 hover:bg-blue-200"
+                            ? "bg-gray-50 text-gray-800 hover:bg-gray-200"
                             : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                         }
                       >

@@ -135,9 +135,9 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
           {data.added > 0 && (
             <div className="mb-3">
               <div className="flex items-center space-x-2 mb-2">
-                <div className="w-3 h-3 rounded bg-blue-400" />
+                <div className="w-3 h-3 rounded bg-gray-400" />
                 <span className="text-sm font-medium text-gray-700">
-                  Added ({data.added}):
+                  Added ({data.added})
                 </span>
               </div>
               <div className="space-y-1 ml-5">
@@ -158,8 +158,7 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
                       </span>
                     )}
                     <span className="text-gray-600 truncate">
-                      {auth.authName}: +{auth.count} permission
-                      {auth.count !== 1 ? "s" : ""}
+                      {auth.authName} (+{auth.count})
                     </span>
                   </div>
                 ))}
@@ -179,7 +178,7 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-3 h-3 rounded bg-yellow-600" />
                 <span className="text-sm font-medium text-gray-700">
-                  Removed ({data.removed}):
+                  Removed ({data.removed})
                 </span>
               </div>
               <div className="space-y-1 ml-5">
@@ -200,8 +199,7 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
                       </span>
                     )}
                     <span className="text-gray-600 truncate">
-                      {auth.authName}: -{auth.count} permission
-                      {auth.count !== 1 ? "s" : ""}
+                      {auth.authName} (-{auth.count})
                     </span>
                   </div>
                 ))}
@@ -236,7 +234,7 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
           </div>
           <div className="grid grid-cols-2 gap-4 text-right">
             <div>
-              <div className="text-lg font-bold text-blue-400">
+              <div className="text-lg font-bold text-gray-500">
                 {totalAdded}
               </div>
               <div className="text-xs text-gray-600">Added</div>
@@ -290,7 +288,7 @@ const DailyPermissionsChart: React.FC<DailyPermissionsChartProps> = ({
                 <Bar
                   dataKey="added"
                   stackId="a"
-                  fill="#A0C0FF"
+                  fill="#D4D4D4"
                   name="Added"
                   radius={[0, 0, 4, 4]}
                 />
