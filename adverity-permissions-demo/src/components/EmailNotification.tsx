@@ -18,20 +18,31 @@ import {
 } from "@/components/ui/table";
 import type { EmailNotificationProps } from "@/data/types";
 import { formatDate } from "@/utils/date-utils";
+import { authorizations } from "@/data/dummy-data";
 import { Mail, Clock } from "lucide-react";
 
 const EmailNotification: React.FC<EmailNotificationProps> = ({
   permissionChanges,
   onSeeDetails,
 }) => {
+  // Sort permission changes: Removed first, then Added, with most recent first within each group
+  const sortedPermissionChanges = [...permissionChanges].sort((a, b) => {
+    // Primary sort: Removed comes before Added
+    if (a.action !== b.action) {
+      return a.action === "Removed" ? -1 : 1;
+    }
+    // Secondary sort: Most recent first within same action
+    return b.dateTime.getTime() - a.dateTime.getTime();
+  });
+
   // Group changes by authorization
-  const changesByAuth = permissionChanges.reduce((acc, change) => {
+  const changesByAuth = sortedPermissionChanges.reduce((acc, change) => {
     if (!acc[change.authorizationId]) {
       acc[change.authorizationId] = [];
     }
     acc[change.authorizationId].push(change);
     return acc;
-  }, {} as Record<string, typeof permissionChanges>);
+  }, {} as Record<string, typeof sortedPermissionChanges>);
 
   const today = new Date();
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
@@ -84,13 +95,18 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {permissionChanges.slice(0, 10).map((change) => (
-                  <TableRow key={change.id} className="text-gray-500">
-                    <TableCell className="font-medium text-black">
-                      {change.authorizationId
-                        .replace("auth-", "")
-                        .replace(/-/g, " ")}
-                    </TableCell>
+                {sortedPermissionChanges.slice(0, 10).map((change) => {
+                  // Find the authorization name by authorizationId
+                  const authorization = authorizations.find(auth => auth.id === change.authorizationId);
+                  const authorizationName = authorization
+                    ? authorization.name
+                    : change.authorizationId.replace("auth-", "").replace(/-/g, " ");
+
+                  return (
+                    <TableRow key={change.id} className="text-gray-500">
+                      <TableCell className="font-medium text-black">
+                        {authorizationName}
+                      </TableCell>
                     <TableCell>{change.workspace}</TableCell>
                     <TableCell>{change.dataSource}</TableCell>
                     <TableCell>
@@ -100,8 +116,8 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                         }
                         className={
                           change.action === "Added"
-                            ? "bg-blue-50 text-blue-800 hover:bg-blue-200"
-                            : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                            ? "bg-gray-50 text-gray-800"
+                            : "bg-yellow-100 text-yellow-800"
                         }
                       >
                         {change.action}
@@ -133,19 +149,20 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
 
-            {permissionChanges.length > 10 && (
+            {sortedPermissionChanges.length > 10 && (
               <div className="mt-4 p-3 bg-gray-50 rounded-md">
                 <p className="text-sm text-gray-600">
-                  Showing first 10 of {permissionChanges.length} changes.{" "}
+                  Showing first 10 of {sortedPermissionChanges.length} changes.{" "}
                   <button
                     className="text-blue-600 hover:text-blue-700 font-medium"
                     onClick={() => {
                       const firstChangeAuth =
-                        permissionChanges[0]?.authorizationId;
+                        sortedPermissionChanges[0]?.authorizationId;
                       if (firstChangeAuth) {
                         onSeeDetails(firstChangeAuth, {
                           from: yesterday,
