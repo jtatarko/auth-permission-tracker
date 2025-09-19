@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -7,15 +7,21 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
-} from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import type { PermissionChange } from '@/data/types';
-import { format, startOfDay, addDays, isWithinInterval } from 'date-fns';
-import { formatDateForInput } from '@/utils/date-utils';
-import { Calendar } from 'lucide-react';
+  Legend,
+} from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import type { PermissionChange } from "@/data/types";
+import { format, startOfDay, addDays, isWithinInterval } from "date-fns";
+import { formatDateForInput } from "@/utils/date-utils";
+import { Calendar } from "lucide-react";
 
 interface PermissionsChartProps {
   permissionChanges: PermissionChange[];
@@ -35,7 +41,7 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
   permissionChanges,
   dateRange,
   onDateRangeChange,
-  className = ''
+  className = "",
 }) => {
   const chartData = useMemo(() => {
     const data: ChartDataPoint[] = [];
@@ -49,18 +55,18 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
       const dayEnd = addDays(currentDate, 1);
 
       // Filter changes for this day
-      const dayChanges = permissionChanges.filter(change =>
+      const dayChanges = permissionChanges.filter((change) =>
         isWithinInterval(change.dateTime, { start: dayStart, end: dayEnd })
       );
 
-      const added = dayChanges.filter(c => c.action === 'Added').length;
-      const removed = dayChanges.filter(c => c.action === 'Removed').length;
+      const added = dayChanges.filter((c) => c.action === "Added").length;
+      const removed = dayChanges.filter((c) => c.action === "Removed").length;
 
       data.push({
-        date: format(currentDate, 'MMM d'),
+        date: format(currentDate, "MMM d"),
         added,
         removed,
-        total: added + removed
+        total: added + removed,
       });
 
       currentDate = addDays(currentDate, 1);
@@ -71,7 +77,7 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
 
   const totalAdded = chartData.reduce((sum, day) => sum + day.added, 0);
   const totalRemoved = chartData.reduce((sum, day) => sum + day.removed, 0);
-  const maxValue = Math.max(...chartData.map(d => d.total));
+  const maxValue = Math.max(...chartData.map((d) => d.total));
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -80,12 +86,17 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
           <p className="font-medium text-gray-900">{label}</p>
           <div className="space-y-1 mt-2">
             {payload.map((entry: any) => (
-              <div key={entry.dataKey} className="flex items-center space-x-2 text-sm">
+              <div
+                key={entry.dataKey}
+                className="flex items-center space-x-2 text-sm"
+              >
                 <div
                   className="w-3 h-3 rounded"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-gray-600 capitalize">{entry.dataKey}:</span>
+                <span className="text-gray-600 capitalize">
+                  {entry.dataKey}:
+                </span>
                 <span className="font-medium">{entry.value}</span>
               </div>
             ))}
@@ -107,48 +118,54 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-lg">Permission Changes Over Time</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-lg">
+              Daily view of permission changes
+            </CardTitle>
+            {/* <CardDescription>
               Daily view of permission additions and removals
-            </CardDescription>
+            </CardDescription> */}
           </div>
           <div className="grid grid-cols-2 gap-4 text-right">
             <div>
-              <div className="text-lg font-bold text-blue-600">{totalAdded}</div>
+              <div className="text-lg font-bold text-blue-400">
+                {totalAdded}
+              </div>
               <div className="text-xs text-gray-600">Added</div>
             </div>
             <div>
-              <div className="text-lg font-bold text-yellow-600">{totalRemoved}</div>
+              <div className="text-lg font-bold text-yellow-600">
+                {totalRemoved}
+              </div>
               <div className="text-xs text-gray-600">Removed</div>
             </div>
           </div>
         </div>
 
         {/* Date Range Picker */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">From Date</label>
+            <label className="block text-sm font-medium mb-1">From</label>
             <Input
               type="date"
               value={formatDateForInput(dateRange.from)}
               onChange={(e) =>
                 onDateRangeChange({
                   ...dateRange,
-                  from: new Date(e.target.value)
+                  from: new Date(e.target.value),
                 })
               }
               className="text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">To Date</label>
+            <label className="block text-sm font-medium mb-1">To</label>
             <Input
               type="date"
               value={formatDateForInput(dateRange.to)}
               onChange={(e) =>
                 onDateRangeChange({
                   ...dateRange,
-                  to: new Date(e.target.value)
+                  to: new Date(e.target.value),
                 })
               }
               className="text-sm"
@@ -160,7 +177,9 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
               size="sm"
               onClick={() => {
                 const now = new Date();
-                const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                const thirtyDaysAgo = new Date(
+                  now.getTime() - 30 * 24 * 60 * 60 * 1000
+                );
                 onDateRangeChange({ from: thirtyDaysAgo, to: now });
               }}
               className="text-xs"
@@ -172,7 +191,9 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
               size="sm"
               onClick={() => {
                 const now = new Date();
-                const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                const ninetyDaysAgo = new Date(
+                  now.getTime() - 90 * 24 * 60 * 60 * 1000
+                );
                 onDateRangeChange({ from: ninetyDaysAgo, to: now });
               }}
               className="text-xs"
@@ -183,7 +204,7 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-80 w-full">
+        <div className="h-40 w-full">
           {chartData.length === 0 || maxValue === 0 ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">
@@ -206,29 +227,23 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
                 <XAxis
                   dataKey="date"
                   tick={{ fontSize: 12 }}
-                  tickLine={{ stroke: '#e0e0e0' }}
-                  axisLine={{ stroke: '#e0e0e0' }}
+                  tickLine={{ stroke: "#e0e0e0" }}
+                  axisLine={{ stroke: "#e0e0e0" }}
                 />
                 <YAxis
                   tick={{ fontSize: 12 }}
-                  tickLine={{ stroke: '#e0e0e0' }}
-                  axisLine={{ stroke: '#e0e0e0' }}
+                  tickLine={{ stroke: "#e0e0e0" }}
+                  axisLine={{ stroke: "#e0e0e0" }}
                   domain={[0, maxValue]}
                 />
                 <Tooltip
                   content={<CustomTooltip />}
-                  cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
-                />
-                <Legend
-                  wrapperStyle={{
-                    paddingTop: '20px',
-                    fontSize: '14px'
-                  }}
+                  cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                 />
                 <Bar
                   dataKey="added"
                   stackId="a"
-                  fill="#3b82f6"
+                  fill="#A0C0FF"
                   name="Added"
                   radius={[0, 0, 4, 4]}
                 />
@@ -237,7 +252,7 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
                   stackId="a"
                   fill="#eab308"
                   name="Removed"
-                  radius={[4, 4, 0, 0]}
+                  radius={[2, 2, 0, 0]}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -245,7 +260,7 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
         </div>
 
         {/* Summary stats */}
-        <div className="mt-4 pt-4 border-t grid grid-cols-3 gap-4 text-center">
+        {/* <div className="mt-4 pt-4 border-t grid grid-cols-3 gap-4 text-center">
           <div>
             <div className="text-lg font-bold text-gray-900">
               {totalAdded + totalRemoved}
@@ -254,17 +269,17 @@ const PermissionsChart: React.FC<PermissionsChartProps> = ({
           </div>
           <div>
             <div className="text-lg font-bold text-gray-900">
-              {Math.round(((totalAdded + totalRemoved) / chartData.length) * 10) / 10}
+              {Math.round(
+                ((totalAdded + totalRemoved) / chartData.length) * 10
+              ) / 10}
             </div>
             <div className="text-sm text-gray-600">Avg per Day</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-gray-900">
-              {maxValue}
-            </div>
+            <div className="text-lg font-bold text-gray-900">{maxValue}</div>
             <div className="text-sm text-gray-600">Peak Day</div>
           </div>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

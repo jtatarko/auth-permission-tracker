@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import type { AuthorizationDetailProps } from '@/data/types';
-import { formatDateShort, formatRelativeTime } from '@/utils/date-utils';
-import { getPermissionChangesForAuth } from '@/data/dummy-data';
-import PermissionsDrawer from './PermissionsDrawer';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import type { AuthorizationDetailProps } from "@/data/types";
+import { formatDateShort, formatRelativeTime } from "@/utils/date-utils";
+import { getPermissionChangesForAuth } from "@/data/dummy-data";
+import PermissionsDrawer from "./PermissionsDrawer";
 import {
   ChevronRight,
   Home,
@@ -15,13 +21,13 @@ import {
   Settings,
   Eye,
   Database,
-  Users
-} from 'lucide-react';
+  Users,
+} from "lucide-react";
 
 const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   authorization,
   onViewChanges,
-  onNavigateToList
+  onNavigateToList,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [autoOpenDrawer, setAutoOpenDrawer] = useState(false);
@@ -46,36 +52,35 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Access granted':
-        return 'bg-green-100 text-green-800';
-      case 'Expired':
-        return 'bg-red-100 text-red-800';
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-800';
+      case "Connected":
+        return "bg-green-100 text-green-800";
+      case "Expired":
+        return "bg-red-100 text-red-800";
+      case "Pending":
+        return "bg-yellow-100 text-yellow-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getDataSourceIcon = (type: string) => {
-    // In a real app, you'd use actual brand icons
     switch (type) {
-      case 'Meta':
-        return '📘';
-      case 'Google Ads':
-        return '🔍';
-      case 'Amazon Advertising':
-        return '📦';
-      case 'Google Sheets':
-        return '📊';
-      case 'LinkedIn Ads':
-        return '💼';
-      case 'TikTok Ads':
-        return '🎵';
-      case 'Twitter Ads':
-        return '🐦';
+      case "Meta":
+        return "/logos/meta-symbol.svg";
+      case "Google Ads":
+        return "/logos/google-ads-symbol.svg";
+      case "Amazon Advertising":
+        return "/logos/amazon-symbol.svg";
+      case "Google Sheets":
+        return "/logos/google-sheets-symbol.svg";
+      case "LinkedIn Ads":
+        return "/logos/linkedin-symbol.svg";
+      case "TikTok Ads":
+        return "/logos/tiktok-symbol.svg";
+      case "Twitter Ads":
+        return "/logos/twitter-x-symbol.svg";
       default:
-        return '🔗';
+        return "🔗";
     }
   };
 
@@ -84,7 +89,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
     `${authorization.type}_CampaignStats`,
     `${authorization.type}_PerformanceData`,
     `${authorization.type}_AudienceInsights`,
-    `${authorization.type}_ConversionTracking`
+    `${authorization.type}_ConversionTracking`,
   ].slice(0, authorization.datastreamsCount);
 
   return (
@@ -92,7 +97,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center space-x-2 text-sm text-gray-600">
         <button
-          onClick={() => window.location.href = '/'}
+          onClick={() => (window.location.href = "/")}
           className="flex items-center hover:text-blue-600 transition-colors"
         >
           <Home className="h-4 w-4 mr-1" />
@@ -116,10 +121,24 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="text-2xl">{getDataSourceIcon(authorization.type)}</div>
+                  {getDataSourceIcon(authorization.type).endsWith(".svg") ? (
+                    <img
+                      src={getDataSourceIcon(authorization.type)}
+                      alt={authorization.type}
+                      className="w-8 h-8"
+                    />
+                  ) : (
+                    <div className="text-2xl">
+                      {getDataSourceIcon(authorization.type)}
+                    </div>
+                  )}
                   <div>
-                    <CardTitle className="text-xl">{authorization.name}</CardTitle>
-                    <CardDescription>{authorization.type} Authorization</CardDescription>
+                    <CardTitle className="text-xl">
+                      {authorization.name}
+                    </CardTitle>
+                    <CardDescription>
+                      {authorization.type} Authorization
+                    </CardDescription>
                   </div>
                 </div>
                 <Badge className={getStatusColor(authorization.status)}>
@@ -137,7 +156,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-4 w-4 text-gray-500" />
                   <span className="text-sm text-gray-600">Created:</span>
-                  <span className="font-medium">{formatDateShort(authorization.created)}</span>
+                  <span className="font-medium">
+                    {formatDateShort(authorization.created)}
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Activity className="h-4 w-4 text-gray-500" />
@@ -145,13 +166,14 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                   <span className="font-medium">
                     {authorization.lastUsed
                       ? formatRelativeTime(authorization.lastUsed)
-                      : 'Never'
-                    }
+                      : "Never"}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Database className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">Authorization ID:</span>
+                  <span className="text-sm text-gray-600">
+                    Authorization ID:
+                  </span>
                   <span className="font-mono text-sm">{authorization.id}</span>
                 </div>
               </div>
@@ -173,7 +195,10 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                     <div className="text-sm text-gray-600">Datastreams</div>
                   </div>
                 </div>
-                <Button onClick={handleViewChanges} className="flex items-center space-x-2">
+                <Button
+                  onClick={handleViewChanges}
+                  className="flex items-center space-x-2"
+                >
                   <Eye className="h-4 w-4" />
                   <span>View changes</span>
                 </Button>
@@ -197,19 +222,27 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               ) : (
                 <div className="space-y-3">
                   {recentChanges.map((change) => (
-                    <div key={change.id} className="flex items-start space-x-3 text-sm">
+                    <div
+                      key={change.id}
+                      className="flex items-start space-x-3 text-sm"
+                    >
                       <Badge
-                        variant={change.action === 'Added' ? 'default' : 'destructive'}
+                        variant={
+                          change.action === "Added" ? "default" : "destructive"
+                        }
                         className={`text-xs ${
-                          change.action === 'Added'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
+                          change.action === "Added"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         {change.action}
                       </Badge>
                       <div className="flex-1 min-w-0">
-                        <p className="text-gray-900 truncate" title={change.permissionName}>
+                        <p
+                          className="text-gray-900 truncate"
+                          title={change.permissionName}
+                        >
                           {change.permissionName}
                         </p>
                         <p className="text-gray-500 text-xs">
@@ -238,9 +271,12 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
       {/* Used by Datastreams */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Used by {authorization.datastreamsCount} Datastreams</CardTitle>
+          <CardTitle className="text-lg">
+            Used by {authorization.datastreamsCount} Datastreams
+          </CardTitle>
           <CardDescription>
-            This authorization is currently being used by the following datastreams
+            This authorization is currently being used by the following
+            datastreams
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -249,7 +285,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               <button
                 key={index}
                 className="p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
-                onClick={() => console.log('Navigate to datastream:', datastream)}
+                onClick={() =>
+                  console.log("Navigate to datastream:", datastream)
+                }
               >
                 <div className="flex items-center space-x-2">
                   <Database className="h-4 w-4 text-blue-600" />

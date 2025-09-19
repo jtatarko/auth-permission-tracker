@@ -37,11 +37,11 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
+    <div className="max-w-6xl mx-auto p-6">
       {/* Email Header */}
-      <div className="border-b pb-4 mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <Mail className="h-5 w-5 text-blue-600" />
+      <div className="pb-4">
+        <div className="flex items-center gap-2 mb-8">
+          <Mail className="h-5 w-5" />
           <span className="text-sm text-gray-600">
             notifications@adverity.com
           </span>
@@ -51,31 +51,23 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
         </h1>
         <div className="flex items-center gap-2 mt-2">
           <Clock className="h-4 w-4 text-gray-500" />
-          <span className="text-sm text-gray-600">
-            {formatDate(today)} • Daily Report
-          </span>
+          <span className="text-sm text-gray-600">Today, 07:00</span>
         </div>
       </div>
 
       {/* Email Content */}
       <div className="space-y-6">
-        <div>
-          <p className="text-gray-700 mb-4">
-            Here's your daily summary of permission changes across your Adverity
-            authorizations:
-          </p>
-        </div>
-
         {/* Permission Changes Summary */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">
-              Permission Changes Summary
-            </CardTitle>
-            <CardDescription>
+            <CardTitle>
               {permissionChanges.length} permission changes detected in the last
               24 hours
-            </CardDescription>
+            </CardTitle>
+            {/* <CardDescription>
+              {permissionChanges.length} permission changes detected in the last
+              24 hours
+            </CardDescription> */}
           </CardHeader>
           <CardContent>
             <Table>
@@ -84,11 +76,11 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                   <TableHead>Authorization</TableHead>
                   <TableHead>Workspace</TableHead>
                   <TableHead>Data Source</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Permission</TableHead>
-                  <TableHead>Time</TableHead>
+                  <TableHead>Change</TableHead>
+                  <TableHead>Permission Name</TableHead>
+                  {/* <TableHead>Time</TableHead> */}
                   <TableHead>Used in Datastreams</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -109,8 +101,8 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                         }
                         className={
                           change.action === "Added"
-                            ? "bg-green-100 text-green-800 hover:bg-green-200"
-                            : "bg-red-100 text-red-800 hover:bg-red-200"
+                            ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                            : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                         }
                       >
                         {change.action}
@@ -119,9 +111,9 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                     <TableCell className="max-w-xs truncate">
                       {change.permissionName}
                     </TableCell>
-                    <TableCell className="text-sm text-gray-600">
+                    {/* <TableCell className="text-sm text-gray-600">
                       {formatDate(change.dateTime)}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       <span className="text-sm font-medium">
                         {change.usedInDatastreams}
@@ -173,7 +165,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
+          {/* <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-green-600">
                 {permissionChanges.filter((c) => c.action === "Added").length}
@@ -188,8 +180,8 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               </div>
               <div className="text-sm text-gray-600">Permissions Removed</div>
             </CardContent>
-          </Card>
-          <Card>
+          </Card> */}
+          {/* <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-blue-600">
                 {Object.keys(changesByAuth).length}
@@ -198,23 +190,15 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                 Authorizations Affected
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Email Footer */}
-        <div className="mt-8 pt-6 border-t text-sm text-gray-500">
-          <p>
-            This is an automated daily summary from Adverity. To view detailed
-            permission changes, click on "See details" for any authorization
-            above.
-          </p>
+        <div className="mt-8 pt-6 text-sm text-gray-500">
           <p className="mt-2">
-            Questions? Contact support at{" "}
-            <a
-              href="mailto:support@adverity.com"
-              className="text-blue-600 hover:text-blue-700"
-            >
-              support@adverity.com
+            Update your email preferences or unsubscribe {""}
+            <a href="#" className="text-blue-600 hover:text-blue-700">
+              here
             </a>
           </p>
         </div>

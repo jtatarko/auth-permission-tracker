@@ -1,36 +1,37 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Users, Home } from 'lucide-react';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Mail, Users, Home } from "lucide-react";
 
 const Navigation: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
     {
-      path: '/email',
-      label: 'Email Notification',
+      path: "/email",
+      label: "Email Notification",
       icon: Mail,
-      description: 'Daily permission changes summary'
+      description: "Daily permission changes summary",
     },
     {
-      path: '/authorizations',
-      label: 'Authorizations',
+      path: "/authorizations",
+      label: "Authorizations Page",
       icon: Users,
-      description: 'Manage authorization permissions'
-    }
+      description: "Manage authorization permissions",
+    },
   ];
 
   return (
-    <Card className="mb-6">
-      <CardContent className="p-4">
+    <Card className="bg-white w-screen shadow-none border-none fixed bottom-0 z-10">
+      <CardContent className="p-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Home className="h-5 w-5 text-blue-600" />
-            <span className="font-semibold text-lg">Adverity Permissions Demo</span>
+          <div className="flex items-center space-x-2 text-sm">
+            {/* <Home className="h-5 w-5 text-blue-600" /> */}
+            <span>Adverity Permissions Demo</span>
           </div>
           <div className="flex space-x-2">
+            <div className="mt-2 text-sm text-gray-600">Navigate between</div>
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -38,7 +39,7 @@ const Navigation: React.FC = () => {
               return (
                 <Link key={item.path} to={item.path}>
                   <Button
-                    variant={isActive ? 'default' : 'outline'}
+                    variant="outline"
                     size="sm"
                     className="flex items-center space-x-2"
                   >
@@ -49,9 +50,6 @@ const Navigation: React.FC = () => {
               );
             })}
           </div>
-        </div>
-        <div className="mt-2 text-sm text-gray-600">
-          Navigate between different views to test the user flows
         </div>
       </CardContent>
     </Card>

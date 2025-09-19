@@ -68,7 +68,7 @@ interface Authorization {
   lastUsed: Date | null;
   permissionsCount: number;
   datastreamsCount: number;
-  status: 'Access granted' | 'Expired' | 'Pending';
+  status: 'Connected' | 'Expired' | 'Pending';
 }
 ```
 
