@@ -1,5 +1,6 @@
-import type { PermissionChange } from '@/data/types';
+import type { PermissionChange, Authorization } from '@/data/types';
 import { formatDateTime } from './date-utils';
+import { authorizations } from '@/data/dummy-data';
 
 export interface ExportOptions {
   includeAdded: boolean;
@@ -42,6 +43,7 @@ export const exportPermissionChangesToCSV = (
     'Action',
     'Permission Name',
     'Permission ID',
+    'Authorization Name',
     'Workspace',
     'Data Source',
     'Used in Datastreams',
@@ -49,24 +51,32 @@ export const exportPermissionChangesToCSV = (
   ];
 
   // Create CSV rows
-  const rows = filteredData.map(change => [
-    formatDateTime(change.dateTime),
-    change.action,
-    `"${change.permissionName}"`, // Quote to handle commas in permission names
-    change.id,
-    change.workspace,
-    change.dataSource,
-    change.usedInDatastreams.toString(),
-    `"${change.datastreamNames.join(', ')}"` // Quote and join datastream names
-  ]);
+  const rows = filteredData.map(change => {
+    // Find the authorization name by authorizationId
+    const authorization = authorizations.find(auth => auth.id === change.authorizationId);
+    const authorizationName = authorization ? authorization.name : 'Unknown Authorization';
+
+    return [
+      `"${formatDateTime(change.dateTime)}"`, // Quote date to prevent Excel auto-formatting
+      change.action,
+      `"${change.permissionName}"`, // Quote to handle commas in permission names
+      change.id,
+      `"${authorizationName}"`, // Quote authorization name
+      change.workspace,
+      change.dataSource,
+      change.usedInDatastreams.toString(),
+      `"${change.datastreamNames.join(', ')}"` // Quote and join datastream names
+    ];
+  });
 
   // Combine headers and rows
   const csvContent = [headers, ...rows]
     .map(row => row.join(','))
     .join('\n');
 
-  // Create and download the file
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  // Create and download the file with BOM for proper encoding
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
 
   if (link.download !== undefined) {
@@ -130,7 +140,8 @@ export const exportAuthorizationsToCSV = (
     .map(row => row.join(','))
     .join('\n');
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
 
   if (link.download !== undefined) {
