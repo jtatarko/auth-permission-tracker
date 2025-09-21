@@ -1,4 +1,4 @@
-import type { Authorization, PermissionChange, DataSourceType } from './types';
+import type { Authorization, EntityChange, DataSourceType } from './types';
 
 const workspaces = [
   'SampleCompany-NA',
@@ -77,14 +77,14 @@ export const generateAuthorizations = (): Authorization[] => {
   return authorizations;
 };
 
-// Generate permission changes
-export const generatePermissionChanges = (authorizations: Authorization[]): PermissionChange[] => {
-  const permissionChanges: PermissionChange[] = [];
+// Generate entity changes
+export const generateEntityChanges = (authorizations: Authorization[]): EntityChange[] => {
+  const entityChanges: EntityChange[] = [];
   const now = new Date();
   // Extend to 90 days to include August and September
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
 
-  // Generate 200+ permission changes over the last 90 days
+  // Generate 200+ entity changes over the last 90 days
   for (let i = 0; i < 200; i++) {
     const auth = authorizations[Math.floor(Math.random() * authorizations.length)];
     const dataSource = auth.type;
@@ -93,7 +93,7 @@ export const generatePermissionChanges = (authorizations: Authorization[]): Perm
     // Random date within last 90 days
     const randomDate = new Date(ninetyDaysAgo.getTime() + Math.random() * (now.getTime() - ninetyDaysAgo.getTime()));
 
-    // Select 1-5 datastreams for this permission
+    // Select 1-5 datastreams for this entity
     const selectedDatastreams: string[] = [];
     const numDatastreams = Math.floor(Math.random() * 5) + 1;
     for (let j = 0; j < numDatastreams; j++) {
@@ -103,7 +103,7 @@ export const generatePermissionChanges = (authorizations: Authorization[]): Perm
       }
     }
 
-    const permissionTypes = [
+    const entityTypes = [
       'Campaign Read Access',
       'Campaign Write Access',
       'Audience Data Access',
@@ -116,10 +116,10 @@ export const generatePermissionChanges = (authorizations: Authorization[]): Perm
       'Account Settings'
     ];
 
-    permissionChanges.push({
+    entityChanges.push({
       id: `perm-${i + 1}`,
       authorizationId: auth.id,
-      permissionName: `${dataSource} ${permissionTypes[Math.floor(Math.random() * permissionTypes.length)]} ${Math.floor(Math.random() * 1000)}`,
+      entityName: `${dataSource} ${entityTypes[Math.floor(Math.random() * entityTypes.length)]} ${Math.floor(Math.random() * 1000)}`,
       action: Math.random() > 0.6 ? 'Added' : 'Removed', // 40% removed, 60% added
       dateTime: randomDate,
       workspace: auth.workspace,
@@ -130,20 +130,20 @@ export const generatePermissionChanges = (authorizations: Authorization[]): Perm
   }
 
   // Sort by date descending
-  return permissionChanges.sort((a, b) => b.dateTime.getTime() - a.dateTime.getTime());
+  return entityChanges.sort((a, b) => b.dateTime.getTime() - a.dateTime.getTime());
 };
 
 // Generate the data
 export const authorizations = generateAuthorizations();
-export const permissionChanges = generatePermissionChanges(authorizations);
+export const entityChanges = generateEntityChanges(authorizations);
 
-// Helper function to get permission changes for a specific authorization
-export const getPermissionChangesForAuth = (authId: string): PermissionChange[] => {
-  return permissionChanges.filter(change => change.authorizationId === authId);
+// Helper function to get entity changes for a specific authorization
+export const getEntityChangesForAuth = (authId: string): EntityChange[] => {
+  return entityChanges.filter(change => change.authorizationId === authId);
 };
 
-// Helper function to get recent permission changes for email notification
-export const getRecentPermissionChanges = (days: number = 1): PermissionChange[] => {
+// Helper function to get recent entity changes for email notification
+export const getRecentEntityChanges = (days: number = 1): EntityChange[] => {
   const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-  return permissionChanges.filter(change => change.dateTime >= cutoff);
+  return entityChanges.filter(change => change.dateTime >= cutoff);
 };

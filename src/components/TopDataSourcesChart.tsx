@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { PermissionChange } from "@/data/types";
+import type { EntityChange } from "@/data/types";
 import { isWithinInterval } from "date-fns";
 
 interface TopDataSourcesChartProps {
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   dateRange: { from: Date; to: Date };
   className?: string;
 }
@@ -20,7 +20,7 @@ interface DataSourceStats {
 }
 
 const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
-  permissionChanges,
+  entityChanges,
   dateRange,
   className = "",
 }) => {
@@ -57,7 +57,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
 
   const chartData = useMemo(() => {
     // Filter changes within date range
-    const filteredChanges = permissionChanges.filter((change) =>
+    const filteredChanges = entityChanges.filter((change) =>
       isWithinInterval(change.dateTime, {
         start: dateRange.from,
         end: dateRange.to,
@@ -100,7 +100,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
       .sort((a, b) => b.total - a.total);
 
     return data;
-  }, [permissionChanges, dateRange]);
+  }, [entityChanges, dateRange]);
 
   const totalChanges = chartData.reduce((sum, item) => sum + item.total, 0);
 
@@ -159,7 +159,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
           <div className="flex items-center justify-center h-64 text-gray-500">
             <div className="text-center">
               <div className="text-4xl mb-2">📊</div>
-              <p>No permission changes in selected date range</p>
+              <p>No entity changes in selected date range</p>
             </div>
           </div>
         ) : (

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { AuthorizationsPageState } from "@/data/types";
-import { authorizations, permissionChanges } from "@/data/dummy-data";
+import { authorizations, entityChanges } from "@/data/dummy-data";
 import {
   formatDateShort,
   formatRelativeTime,
@@ -229,8 +229,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Authorizations</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-medium text-gray-900">Authorizations</h1>
+        <p className="text-gray-500 mt-2 text-sm">
           Grant Adverity access to data sources and destinations.
         </p>
       </div>
@@ -238,7 +238,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
       {/* Analytics Dashboard */}
       <AnalyticsContainer
         className="z-20"
-        permissionChanges={permissionChanges}
+        entityChanges={entityChanges}
         dateRange={state.chartDateRange}
         onDateRangeChange={handleChartDateRangeChange}
       />
@@ -253,9 +253,9 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
             {/* Filter Row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">
+                {/* <label className="block text-sm font-medium mb-1">
                   Workspace
-                </label>
+                </label> */}
                 <Select
                   value={state.filters.workspace}
                   onValueChange={(value) =>
@@ -280,9 +280,9 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">
+                {/* <label className="block text-sm font-medium mb-1">
                   Data Source
-                </label>
+                </label> */}
                 <Select
                   value={state.filters.dataSource}
                   onValueChange={(value) =>
@@ -307,7 +307,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
+                {/* <label className="block text-sm font-medium mb-1">Status</label> */}
                 <Select
                   value={state.filters.status}
                   onValueChange={(value) =>
@@ -332,7 +332,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Search</label>
+                {/* <label className="block text-sm font-medium mb-1">Search</label> */}
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -370,7 +370,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                       onClick={handleBulkExport}
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Export Permission Changes
+                      Export Entity Changes
                     </Button>
                     <Button variant="outline" size="sm">
                       <RefreshCw className="h-4 w-4 mr-2" />
@@ -553,8 +553,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
       <ExportModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}
-        permissionChanges={permissionChanges}
-        title="Export Permission Changes"
+        entityChanges={entityChanges}
+        title="Export Entity Changes"
       />
     </div>
   );

@@ -15,11 +15,11 @@ import { authorizations } from "@/data/dummy-data";
 import { Mail, Clock } from "lucide-react";
 
 const EmailNotification: React.FC<EmailNotificationProps> = ({
-  permissionChanges,
+  entityChanges,
   onSeeDetails,
 }) => {
-  // Sort permission changes: Removed first, then Added, with most recent first within each group
-  const sortedPermissionChanges = [...permissionChanges].sort((a, b) => {
+  // Sort entity changes: Removed first, then Added, with most recent first within each group
+  const sortedEntityChanges = [...entityChanges].sort((a, b) => {
     // Primary sort: Removed comes before Added
     if (a.action !== b.action) {
       return a.action === "Removed" ? -1 : 1;
@@ -52,15 +52,15 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
 
       {/* Email Content */}
       <div className="space-y-6">
-        {/* Permission Changes Summary */}
+        {/* Entity Changes Summary */}
         <Card>
           <CardHeader>
             <CardTitle>
-              {permissionChanges.length} permission changes detected in the last
-              24 hours
+              {entityChanges.length} entity changes detected in the last 24
+              hours
             </CardTitle>
             {/* <CardDescription>
-              {permissionChanges.length} permission changes detected in the last
+              {entityChanges.length} entity changes detected in the last
               24 hours
             </CardDescription> */}
           </CardHeader>
@@ -72,14 +72,14 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                   <TableHead>Workspace</TableHead>
                   <TableHead>Data Source</TableHead>
                   <TableHead>Change</TableHead>
-                  <TableHead>Permission Name</TableHead>
+                  <TableHead>Entity Name</TableHead>
                   {/* <TableHead>Time</TableHead> */}
                   <TableHead>Used in Datastreams</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedPermissionChanges.slice(0, 10).map((change) => {
+                {sortedEntityChanges.slice(0, 10).map((change) => {
                   // Find the authorization name by authorizationId
                   const authorization = authorizations.find(
                     (auth) => auth.id === change.authorizationId
@@ -114,7 +114,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
                         </Badge>
                       </TableCell>
                       <TableCell className="max-w-xs truncate text-black">
-                        {change.permissionName}
+                        {change.entityName}
                       </TableCell>
                       {/* <TableCell className="text-sm text-gray-600">
                       {formatDate(change.dateTime)}
@@ -144,15 +144,15 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               </TableBody>
             </Table>
 
-            {sortedPermissionChanges.length > 10 && (
+            {sortedEntityChanges.length > 10 && (
               <div className="mt-4 p-3 bg-gray-50 rounded-md">
                 <p className="text-sm text-gray-600">
-                  Showing first 10 of {sortedPermissionChanges.length} changes.{" "}
+                  Showing first 10 of {sortedEntityChanges.length} changes.{" "}
                   <button
                     className="text-blue-600 hover:text-blue-700 font-medium"
                     onClick={() => {
                       const firstChangeAuth =
-                        sortedPermissionChanges[0]?.authorizationId;
+                        sortedEntityChanges[0]?.authorizationId;
                       if (firstChangeAuth) {
                         onSeeDetails(firstChangeAuth, {
                           from: yesterday,
@@ -174,7 +174,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
           {/* <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-green-600">
-                {permissionChanges.filter((c) => c.action === "Added").length}
+                {entityChanges.filter((c) => c.action === "Added").length}
               </div>
               <div className="text-sm text-gray-600">Entities Added</div>
             </CardContent>
@@ -182,7 +182,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
           <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-red-600">
-                {permissionChanges.filter((c) => c.action === "Removed").length}
+                {entityChanges.filter((c) => c.action === "Removed").length}
               </div>
               <div className="text-sm text-gray-600">Entities Removed</div>
             </CardContent>

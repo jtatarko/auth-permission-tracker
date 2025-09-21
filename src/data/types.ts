@@ -8,10 +8,10 @@ export type DataSourceType =
   | 'TikTok Ads'
   | 'Twitter Ads';
 
-export interface PermissionChange {
+export interface EntityChange {
   id: string;
   authorizationId: string;
-  permissionName: string;
+  entityName: string;
   action: 'Added' | 'Removed';
   dateTime: Date;
   workspace: string;
@@ -33,7 +33,7 @@ export interface Authorization {
 }
 
 export interface EmailNotificationProps {
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   onSeeDetails: (authId: string, emailDateRange: { from: Date; to: Date }) => void;
 }
 

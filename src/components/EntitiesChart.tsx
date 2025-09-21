@@ -11,14 +11,14 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { PermissionChange } from "@/data/types";
+import type { EntityChange } from "@/data/types";
 import { format, startOfDay, addDays, isWithinInterval } from "date-fns";
 import { formatDateForInput } from "@/utils/date-utils";
 import { authorizations } from "@/data/dummy-data";
 import TopDataSourcesChart from "./TopDataSourcesChart";
 
 interface EntitiesChartProps {
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   dateRange: { from: Date; to: Date };
   onDateRangeChange: (dateRange: { from: Date; to: Date }) => void;
   className?: string;
@@ -41,7 +41,7 @@ interface ChartDataPoint {
 }
 
 const EntitiesChart: React.FC<EntitiesChartProps> = ({
-  permissionChanges,
+  entityChanges,
   dateRange,
   onDateRangeChange,
   className = "overflow-visible",
@@ -58,7 +58,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
       const dayEnd = addDays(currentDate, 1);
 
       // Filter changes for this day
-      const dayChanges = permissionChanges.filter((change) =>
+      const dayChanges = entityChanges.filter((change) =>
         isWithinInterval(change.dateTime, { start: dayStart, end: dayEnd })
       );
 
@@ -66,7 +66,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
       const removedChanges = dayChanges.filter((c) => c.action === "Removed");
 
       // Group by authorization and count changes
-      const groupChangesByAuth = (changes: PermissionChange[]) => {
+      const groupChangesByAuth = (changes: EntityChange[]) => {
         const authGroups: { [authId: string]: AuthorizationChange } = {};
 
         changes.forEach((change) => {
@@ -105,7 +105,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
     }
 
     return data;
-  }, [permissionChanges, dateRange]);
+  }, [entityChanges, dateRange]);
 
   const totalAdded = chartData.reduce((sum, day) => sum + day.added, 0);
   const totalRemoved = chartData.reduce((sum, day) => sum + day.removed, 0);
@@ -167,7 +167,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
                       </span>
                     )}
                     <span className="text-gray-600 truncate">
-                      {auth.authName}: +{auth.count} permission
+                      {auth.authName}: +{auth.count} entity
                       {auth.count !== 1 ? "s" : ""}
                     </span>
                   </div>
@@ -209,7 +209,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
                       </span>
                     )}
                     <span className="text-gray-600 truncate">
-                      {auth.authName}: -{auth.count} permission
+                      {auth.authName}: -{auth.count} entity
                       {auth.count !== 1 ? "s" : ""}
                     </span>
                   </div>
@@ -239,9 +239,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
       {/* Date Range Picker */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">
-            Permission Changes Analytics
-          </CardTitle>
+          <CardTitle className="text-lg">Entity Changes Analytics</CardTitle>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">From</label>
@@ -313,7 +311,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-lg">
-                  Daily view of permission changes
+                  Daily view of entity changes
                 </CardTitle>
               </div>
               <div className="grid grid-cols-2 gap-4 text-right">
@@ -338,7 +336,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
                 <div className="flex items-center justify-center h-full text-gray-500">
                   <div className="text-center">
                     <div className="text-4xl mb-2">📊</div>
-                    <p>No permission changes in selected date range</p>
+                    <p>No entity changes in selected date range</p>
                   </div>
                 </div>
               ) : (
@@ -393,7 +391,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
         {/* Top Data Sources Chart - 2/5 width */}
         <TopDataSourcesChart
           className="lg:col-span-2"
-          permissionChanges={permissionChanges}
+          entityChanges={entityChanges}
           dateRange={dateRange}
         />
       </div>

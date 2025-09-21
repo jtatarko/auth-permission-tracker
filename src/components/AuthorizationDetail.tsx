@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { AuthorizationDetailProps } from "@/data/types";
 import { formatDateShort, formatRelativeTime } from "@/utils/date-utils";
-import { getPermissionChangesForAuth } from "@/data/dummy-data";
+import { getEntityChangesForAuth } from "@/data/dummy-data";
 import EntitiesDrawer from "./EntitiesDrawer";
 import { ChevronRight, Home } from "lucide-react";
 
@@ -17,9 +17,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   const [autoOpenDrawer, setAutoOpenDrawer] = useState(false);
   const [drawerDateRange] = useState<{ from: Date; to: Date } | undefined>();
 
-  // Get permission changes for this authorization
-  const permissionChanges = getPermissionChangesForAuth(authorization.id);
-  const recentChanges = permissionChanges.slice(0, 5);
+  // Get entity changes for this authorization
+  const entityChanges = getEntityChangesForAuth(authorization.id);
+  const recentChanges = entityChanges.slice(0, 5);
 
   // Auto-open drawer if coming from email
   useEffect(() => {
@@ -184,10 +184,8 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-md">
-                Latest permission changes
-              </CardTitle>
-              {/* <CardDescription>Latest permission modifications</CardDescription> */}
+              <CardTitle className="text-md">Latest entity changes</CardTitle>
+              {/* <CardDescription>Latest entity modifications</CardDescription> */}
             </CardHeader>
             <CardContent>
               {recentChanges.length === 0 ? (
@@ -204,9 +202,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                       <div className="flex-1 min-w-0">
                         <p
                           className="text-gray-900 truncate"
-                          title={change.permissionName}
+                          title={change.entityName}
                         >
-                          {change.permissionName}
+                          {change.entityName}
                         </p>
                         <p className="text-gray-500 text-xs">
                           {formatRelativeTime(change.dateTime)}
@@ -230,14 +228,14 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                       </div>
                     </div>
                   ))}
-                  {/* {permissionChanges.length > 5 && (
+                  {/* {entityChanges.length > 5 && (
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={handleViewChanges}
                       className="w-full"
                     >
-                      View all {permissionChanges.length} changes
+                      View all {entityChanges.length} changes
                     </Button>
                   )} */}
                 </div>

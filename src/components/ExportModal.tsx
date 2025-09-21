@@ -14,24 +14,24 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDateForInput } from "@/utils/date-utils";
 import {
-  exportPermissionChangesToCSV,
+  exportEntityChangesToCSV,
   type ExportOptions,
 } from "@/utils/csv-export";
-import type { PermissionChange } from "@/data/types";
+import type { EntityChange } from "@/data/types";
 import { Download, Calendar, Filter } from "lucide-react";
 
 interface ExportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   title?: string;
 }
 
 const ExportModal: React.FC<ExportModalProps> = ({
   isOpen,
   onClose,
-  permissionChanges,
-  title = "Export Permission Changes",
+  entityChanges,
+  title = "Export Entity Changes",
 }) => {
   const [dateRange, setDateRange] = useState({
     from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
@@ -42,7 +42,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
   const [isExporting, setIsExporting] = useState(false);
 
   // Calculate preview stats
-  const previewData = permissionChanges.filter((change) => {
+  const previewData = entityChanges.filter((change) => {
     // Date range filter
     if (change.dateTime < dateRange.from || change.dateTime > dateRange.to) {
       return false;
@@ -70,7 +70,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
         dateRange,
       };
 
-      exportPermissionChangesToCSV(permissionChanges, exportOptions);
+      exportEntityChangesToCSV(entityChanges, exportOptions);
 
       // Close modal after successful export
       setTimeout(() => {
@@ -104,8 +104,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
             <span>{title}</span>
           </DialogTitle>
           <DialogDescription>
-            Configure your export settings and download permission changes as
-            CSV
+            Configure your export settings and download entity changes as CSV
           </DialogDescription>
         </DialogHeader>
 
@@ -178,10 +177,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     Added entities
                     <span className="text-gray-500 ml-1">
                       (
-                      {
-                        permissionChanges.filter((c) => c.action === "Added")
-                          .length
-                      }
+                      {entityChanges.filter((c) => c.action === "Added").length}
                       )
                     </span>
                   </Label>
@@ -200,7 +196,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     <span className="text-gray-500 ml-1">
                       (
                       {
-                        permissionChanges.filter((c) => c.action === "Removed")
+                        entityChanges.filter((c) => c.action === "Removed")
                           .length
                       }
                       )

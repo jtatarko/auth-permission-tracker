@@ -10,7 +10,7 @@ const Navigation: React.FC = () => {
       path: "/email",
       label: "Email Notification",
       icon: Mail,
-      description: "Daily permission changes summary",
+      description: "Daily entity changes summary",
     },
     {
       path: "/authorizations",

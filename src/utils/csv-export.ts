@@ -1,4 +1,4 @@
-import type { PermissionChange } from '@/data/types';
+import type { EntityChange } from '@/data/types';
 import { formatDateTime } from './date-utils';
 import { authorizations } from '@/data/dummy-data';
 
@@ -8,13 +8,13 @@ export interface ExportOptions {
   dateRange?: { from: Date; to: Date };
 }
 
-export const exportPermissionChangesToCSV = (
-  permissionChanges: PermissionChange[],
+export const exportEntityChangesToCSV = (
+  entityChanges: EntityChange[],
   options: ExportOptions,
   filename?: string
 ): void => {
   // Filter data based on options
-  let filteredData = permissionChanges.filter(change => {
+  let filteredData = entityChanges.filter(change => {
     // Filter by action
     if (options.includeAdded && change.action === 'Added') return true;
     if (options.includeRemoved && change.action === 'Removed') return true;
@@ -41,8 +41,8 @@ export const exportPermissionChangesToCSV = (
   const headers = [
     'Date & Time',
     'Action',
-    'Permission Name',
-    'Permission ID',
+    'Entity Name',
+    'Entity ID',
     'Authorization Name',
     'Workspace',
     'Data Source',
@@ -59,7 +59,7 @@ export const exportPermissionChangesToCSV = (
     return [
       `"${formatDateTime(change.dateTime)}"`, // Quote date to prevent Excel auto-formatting
       change.action,
-      `"${change.permissionName}"`, // Quote to handle commas in permission names
+      `"${change.entityName}"`, // Quote to handle commas in entity names
       change.id,
       `"${authorizationName}"`, // Quote authorization name
       change.workspace,
@@ -103,10 +103,10 @@ const generateFilename = (options: ExportOptions): string => {
   if (options.dateRange) {
     const fromDate = options.dateRange.from.toISOString().split('T')[0];
     const toDate = options.dateRange.to.toISOString().split('T')[0];
-    return `permission_changes_${fromDate}_to_${toDate}${actionSuffix}.csv`;
+    return `entity_changes_${fromDate}_to_${toDate}${actionSuffix}.csv`;
   }
 
-  return `permission_changes_${today}${actionSuffix}.csv`;
+  return `entity_changes_${today}${actionSuffix}.csv`;
 };
 
 // Helper function to export authorization data

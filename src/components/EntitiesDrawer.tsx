@@ -25,13 +25,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { EntitiesDrawerProps } from "@/data/types";
-import { getPermissionChangesForAuth } from "@/data/dummy-data";
+import { getEntityChangesForAuth } from "@/data/dummy-data";
 import {
   formatDateTime,
   formatDateForInput,
   isDateInRange,
 } from "@/utils/date-utils";
-import { exportPermissionChangesToCSV } from "@/utils/csv-export";
+import { exportEntityChangesToCSV } from "@/utils/csv-export";
 import { Search, Download, Calendar, ArrowUpDown } from "lucide-react";
 
 const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
@@ -51,17 +51,17 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
       to: new Date(),
     }
   );
-  const [sortBy, setSortBy] = useState<
-    "dateTime" | "action" | "permissionName"
-  >("dateTime");
+  const [sortBy, setSortBy] = useState<"dateTime" | "action" | "entityName">(
+    "dateTime"
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  // Get permission changes for this authorization
-  const allPermissionChanges = getPermissionChangesForAuth(authorizationId);
+  // Get entity changes for this authorization
+  const allEntityChanges = getEntityChangesForAuth(authorizationId);
 
-  // Filter and sort permission changes
+  // Filter and sort entity changes
   const filteredChanges = useMemo(() => {
-    const filtered = allPermissionChanges.filter((change) => {
+    const filtered = allEntityChanges.filter((change) => {
       // Date range filter
       if (!isDateInRange(change.dateTime, dateRange)) return false;
 
@@ -73,7 +73,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
         return (
-          change.permissionName.toLowerCase().includes(searchLower) ||
+          change.entityName.toLowerCase().includes(searchLower) ||
           change.id.toLowerCase().includes(searchLower) ||
           change.datastreamNames.some((name) =>
             name.toLowerCase().includes(searchLower)
@@ -97,9 +97,9 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
           aVal = a.action;
           bVal = b.action;
           break;
-        case "permissionName":
-          aVal = a.permissionName.toLowerCase();
-          bVal = b.permissionName.toLowerCase();
+        case "entityName":
+          aVal = a.entityName.toLowerCase();
+          bVal = b.entityName.toLowerCase();
           break;
         default:
           aVal = a.dateTime.getTime();
@@ -115,7 +115,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
 
     return filtered;
   }, [
-    allPermissionChanges,
+    allEntityChanges,
     dateRange,
     actionFilter,
     searchTerm,
@@ -133,7 +133,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
   };
 
   const handleExport = () => {
-    exportPermissionChangesToCSV(filteredChanges, {
+    exportEntityChangesToCSV(filteredChanges, {
       includeAdded: actionFilter === "All" || actionFilter === "Added",
       includeRemoved: actionFilter === "All" || actionFilter === "Removed",
       dateRange,
@@ -161,7 +161,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
         <SheetHeader className="space-y-4">
           <div>
             <SheetTitle className="text-xl">
-              History of Permission Changes
+              History of Entity Changes
             </SheetTitle>
             <SheetDescription>for the authorization</SheetDescription>
           </div>
@@ -233,7 +233,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
             {/* Results summary and export */}
             <div className="flex justify-between items-center pt-2">
               <div className="text-sm text-gray-600">
-                {filteredChanges.length} permission changes found
+                {filteredChanges.length} entity changes found
               </div>
               <Button onClick={handleExport} variant="outline" size="sm">
                 <Download className="h-4 w-4 mr-2" />
@@ -243,12 +243,12 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
           </div>
         </SheetHeader>
 
-        {/* Permission Changes Table */}
+        {/* Entity Changes Table */}
         <div className="mt-6">
           {filteredChanges.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p>No permission changes found for the selected criteria.</p>
+              <p>No entity changes found for the selected criteria.</p>
             </div>
           ) : (
             <Table>
@@ -280,10 +280,10 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleSort("permissionName")}
+                      onClick={() => handleSort("entityName")}
                       className="h-auto p-0 font-semibold"
                     >
-                      Permission Name
+                      Entity Name
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
@@ -312,8 +312,8 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
                       </Badge>
                     </TableCell>
                     <TableCell className="max-w-xs">
-                      <div className="truncate" title={change.permissionName}>
-                        {change.permissionName}
+                      <div className="truncate" title={change.entityName}>
+                        {change.entityName}
                       </div>
                     </TableCell>
                     <TableCell className="font-mono text-sm text-gray-600">

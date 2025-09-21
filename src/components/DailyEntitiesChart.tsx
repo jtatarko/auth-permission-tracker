@@ -9,12 +9,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { PermissionChange } from "@/data/types";
+import type { EntityChange } from "@/data/types";
 import { format, startOfDay, addDays, isWithinInterval } from "date-fns";
 import { authorizations } from "@/data/dummy-data";
 
 interface DailyEntitiesChartProps {
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   dateRange: { from: Date; to: Date };
   className?: string;
 }
@@ -36,7 +36,7 @@ interface ChartDataPoint {
 }
 
 const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
-  permissionChanges,
+  entityChanges,
   dateRange,
   className = "overflow-visible",
 }) => {
@@ -50,14 +50,14 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
       const dayStart = currentDate;
       const dayEnd = addDays(currentDate, 1);
 
-      const dayChanges = permissionChanges.filter((change) =>
+      const dayChanges = entityChanges.filter((change) =>
         isWithinInterval(change.dateTime, { start: dayStart, end: dayEnd })
       );
 
       const addedChanges = dayChanges.filter((c) => c.action === "Added");
       const removedChanges = dayChanges.filter((c) => c.action === "Removed");
 
-      const groupChangesByAuth = (changes: PermissionChange[]) => {
+      const groupChangesByAuth = (changes: EntityChange[]) => {
         const authGroups: { [authId: string]: AuthorizationChange } = {};
 
         changes.forEach((change) => {
@@ -96,7 +96,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
     }
 
     return data;
-  }, [permissionChanges, dateRange]);
+  }, [entityChanges, dateRange]);
 
   const totalAdded = chartData.reduce((sum, day) => sum + day.added, 0);
   const totalRemoved = chartData.reduce((sum, day) => sum + day.removed, 0);
@@ -254,7 +254,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">
                 <div className="text-4xl mb-2">📊</div>
-                <p>No permission changes in selected date range</p>
+                <p>No entity changes in selected date range</p>
               </div>
             </div>
           ) : (

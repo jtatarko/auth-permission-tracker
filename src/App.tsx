@@ -11,12 +11,12 @@ import EmailNotification from "./components/EmailNotification";
 import AuthorizationsPage from "./components/AuthorizationsPage";
 import AuthorizationDetail from "./components/AuthorizationDetail";
 import Navigation from "./components/Navigation";
-import { authorizations, getRecentPermissionChanges } from "./data/dummy-data";
+import { authorizations, getRecentEntityChanges } from "./data/dummy-data";
 
 // Email page wrapper
 function EmailPage() {
   const navigate = useNavigate();
-  const recentChanges = getRecentPermissionChanges(1);
+  const recentChanges = getRecentEntityChanges(1);
 
   const handleSeeDetails = (
     authId: string,
@@ -29,7 +29,7 @@ function EmailPage() {
 
   return (
     <EmailNotification
-      permissionChanges={recentChanges}
+      entityChanges={recentChanges}
       onSeeDetails={handleSeeDetails}
     />
   );
@@ -83,9 +83,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="container">
         <Navigation />
       </div>
-      <div className="pb-20">
-        {children}
-      </div>
+      <div className="pb-20">{children}</div>
     </div>
   );
 }

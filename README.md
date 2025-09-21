@@ -1,14 +1,14 @@
 # Adverity Entities Tracking Demo
 
-A browser-based demo application for user testing of Adverity's authorization entities tracking system. This demo simulates the complete user flow from email notifications to detailed permission management without requiring a backend.
+A browser-based demo application for user testing of Adverity's authorization entities tracking system. This demo simulates the complete user flow from email notifications to detailed entity management without requiring a backend.
 
 ## Features
 
-- **Email Notification View**: Daily permission changes summary with email-like styling
-- **Entities Drawer**: Detailed permission history with filtering, search, and export
+- **Email Notification View**: Daily entity changes summary with email-like styling
+- **Entities Drawer**: Detailed entity history with filtering, search, and export
 - **Authorization Detail**: Comprehensive view of individual authorizations
 - **Authorizations Dashboard**: Main list with charts, filters, and bulk actions
-- **Interactive Charts**: Permission changes over time with Recharts
+- **Interactive Charts**: Entity changes over time with Recharts
 - **CSV Export**: Comprehensive export functionality for all data
 - **Responsive Design**: Works across desktop and mobile devices
 
@@ -76,14 +76,14 @@ A browser-based demo application for user testing of Adverity's authorization en
 ### Flow 4: Bulk Actions from Authorizations List
 1. Select multiple authorizations via checkboxes
 2. Bulk action buttons become enabled
-3. Export permission changes for selected items
+3. Export entity changes for selected items
 
 ## 📱 Pages & Components
 
 ### Email Notification (`/email`)
 - **Component**: `EmailNotification.tsx`
 - **Features**:
-  - Permission changes summary table
+  - Entity changes summary table
   - Color-coded actions (green=added, red=removed)
   - Quick stats overview
   - "See details" navigation
@@ -91,7 +91,7 @@ A browser-based demo application for user testing of Adverity's authorization en
 ### Authorizations Dashboard (`/authorizations`)
 - **Component**: `AuthorizationsPage.tsx`
 - **Features**:
-  - Stacked bar chart showing permission trends
+  - Stacked bar chart showing entity trends
   - Advanced filtering (workspace, data source, status)
   - Search functionality
   - Sortable table with bulk selection
@@ -120,13 +120,13 @@ A browser-based demo application for user testing of Adverity's authorization en
 
 The application uses comprehensive TypeScript interfaces:
 
-- **PermissionChange**: Individual permission modifications
+- **EntityChange**: Individual entity modifications
 - **Authorization**: Data source authorization details
 - **DataSourceType**: Supported platforms (Meta, Google Ads, etc.)
 
 Sample data includes:
 - **Authorizations**: 15-20 items across 4 workspaces
-- **Permission Changes**: 100+ items spanning 30 days
+- **Entity Changes**: 100+ items spanning 30 days
 - **Datastreams**: Multiple per authorization with realistic naming
 
 ##  UI Components
@@ -140,7 +140,7 @@ Built with shadcn/ui components:
 
 ## Export Features
 
-### Permission Changes Export
+### Entity Changes Export
 - Filter by date range
 - Include/exclude added/removed actions
 - CSV format with comprehensive data
@@ -153,11 +153,11 @@ Built with shadcn/ui components:
 
 ## Testing Scenarios
 
-1. **Email Flow**: Starting from email notification to permission details
+1. **Email Flow**: Starting from email notification to entity details
 2. **Bulk Operations**: Selecting multiple authorizations and performing actions
-3. **Search & Filter**: Finding specific authorizations or permission changes
+3. **Search & Filter**: Finding specific authorizations or entity changes
 4. **Export Functionality**: Exporting different data sets as CSV
-5. **Chart Interaction**: Understanding permission trends over time
+5. **Chart Interaction**: Understanding entity trends over time
 6. **Navigation**: Using breadcrumbs to move between pages
 
 ## 🌐 Browser Support
@@ -210,7 +210,7 @@ src/
 ├── components/
 │   ├── ui/                     # shadcn/ui components
 │   ├── EmailNotification.tsx   # Email summary component
-│   ├── EntitiesDrawer.tsx   # Permission changes drawer
+│   ├── EntitiesDrawer.tsx   # Entity changes drawer
 │   ├── AuthorizationDetail.tsx # Authorization detail page
 │   ├── AuthorizationsPage.tsx  # Main authorizations list
 │   ├── EntitiesChart.tsx    # Stacked chart component

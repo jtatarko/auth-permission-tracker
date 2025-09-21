@@ -2,28 +2,28 @@ import React from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { PermissionChange } from "@/data/types";
+import type { EntityChange } from "@/data/types";
 import { formatDateForInput } from "@/utils/date-utils";
-import { exportPermissionChangesToCSV } from "@/utils/csv-export";
+import { exportEntityChangesToCSV } from "@/utils/csv-export";
 import DailyEntitiesChart from "./DailyEntitiesChart";
 import TopDataSourcesChart from "./TopDataSourcesChart";
 import { Download } from "lucide-react";
 
 interface AnalyticsContainerProps {
-  permissionChanges: PermissionChange[];
+  entityChanges: EntityChange[];
   dateRange: { from: Date; to: Date };
   onDateRangeChange: (dateRange: { from: Date; to: Date }) => void;
   className?: string;
 }
 
 const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
-  permissionChanges,
+  entityChanges,
   dateRange,
   onDateRangeChange,
   className = "overflow-visible",
 }) => {
   const handleExportCSV = () => {
-    exportPermissionChangesToCSV(permissionChanges, {
+    exportEntityChangesToCSV(entityChanges, {
       includeAdded: true,
       includeRemoved: true,
       dateRange: dateRange,
@@ -36,9 +36,7 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
       <Card className="shadow-none border-none">
         <CardHeader className="border-b">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">
-              Permission Changes Analytics
-            </CardTitle>
+            <CardTitle className="text-lg">Entity Changes</CardTitle>
             <Button
               variant="outline"
               size="sm"
@@ -117,13 +115,13 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
         {/* Daily View Chart - 3/5 width */}
         <DailyEntitiesChart
           className="lg:col-span-4 shadow-none border-none"
-          permissionChanges={permissionChanges}
+          entityChanges={entityChanges}
           dateRange={dateRange}
         />
         {/* Top Data Sources Chart - 2/5 width */}
         <TopDataSourcesChart
           className="lg:col-span-1 shadow-none border-none"
-          permissionChanges={permissionChanges}
+          entityChanges={entityChanges}
           dateRange={dateRange}
         />
       </div>
