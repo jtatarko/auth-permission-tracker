@@ -84,18 +84,46 @@ export const generateEntityChanges = (authorizations: Authorization[]): EntityCh
   // Extend to 90 days to include August and September
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
 
-  // Generate 200+ entity changes over the last 90 days
-  for (let i = 0; i < 200; i++) {
-    const auth = authorizations[Math.floor(Math.random() * authorizations.length)];
-    const dataSource = auth.type;
-    const availableDatastreams = datastreamNames[dataSource as keyof typeof datastreamNames] || [];
+  // Generate 80 entity changes over the last 90 days (reduced from 200)
+  const totalChanges = 80;
+
+  // Data source weights - Meta and Google Ads together get ~50% of changes
+  const dataSourceWeights = {
+    'Meta': 0.25,           // 25%
+    'Google Ads': 0.25,     // 25% (together 50%)
+    'Amazon Advertising': 0.15,
+    'Google Sheets': 0.12,
+    'LinkedIn Ads': 0.10,
+    'TikTok Ads': 0.08,
+    'Twitter Ads': 0.05
+  };
+
+  for (let i = 0; i < totalChanges; i++) {
+    // Select data source based on weights
+    let selectedDataSource: DataSourceType;
+    const random = Math.random();
+    let cumulativeWeight = 0;
+
+    for (const [source, weight] of Object.entries(dataSourceWeights)) {
+      cumulativeWeight += weight;
+      if (random <= cumulativeWeight) {
+        selectedDataSource = source as DataSourceType;
+        break;
+      }
+    }
+    selectedDataSource = selectedDataSource! || 'Meta'; // fallback
+
+    // Find authorizations for this data source
+    const authsForSource = authorizations.filter(auth => auth.type === selectedDataSource);
+    const auth = authsForSource[Math.floor(Math.random() * authsForSource.length)] || authorizations[0];
+    const availableDatastreams = datastreamNames[selectedDataSource as keyof typeof datastreamNames] || [];
 
     // Random date within last 90 days
     const randomDate = new Date(ninetyDaysAgo.getTime() + Math.random() * (now.getTime() - ninetyDaysAgo.getTime()));
 
-    // Select 1-5 datastreams for this entity
+    // Select 1-3 datastreams for this entity (reduced from 1-5)
     const selectedDatastreams: string[] = [];
-    const numDatastreams = Math.floor(Math.random() * 5) + 1;
+    const numDatastreams = Math.floor(Math.random() * 3) + 1;
     for (let j = 0; j < numDatastreams; j++) {
       const randomDatastream = availableDatastreams[Math.floor(Math.random() * availableDatastreams.length)];
       if (!selectedDatastreams.includes(randomDatastream)) {
@@ -119,11 +147,11 @@ export const generateEntityChanges = (authorizations: Authorization[]): EntityCh
     entityChanges.push({
       id: `perm-${i + 1}`,
       authorizationId: auth.id,
-      entityName: `${dataSource} ${entityTypes[Math.floor(Math.random() * entityTypes.length)]} ${Math.floor(Math.random() * 1000)}`,
-      action: Math.random() > 0.6 ? 'Added' : 'Removed', // 40% removed, 60% added
+      entityName: `${selectedDataSource} ${entityTypes[Math.floor(Math.random() * entityTypes.length)]} ${Math.floor(Math.random() * 1000)}`,
+      action: Math.random() > 0.75 ? 'Added' : 'Removed', // 25% added, 75% removed (more realistic for permissions)
       dateTime: randomDate,
       workspace: auth.workspace,
-      dataSource: dataSource,
+      dataSource: selectedDataSource,
       datastreamNames: selectedDatastreams,
       usedInDatastreams: selectedDatastreams.length
     });

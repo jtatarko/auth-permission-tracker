@@ -163,7 +163,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
             </div>
           </div>
         ) : (
-          <div className="h-40">
+          <div className="h-32">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -171,8 +171,8 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
                   data={chartData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={40}
-                  outerRadius={80}
+                  innerRadius={25}
+                  outerRadius={50}
                   paddingAngle={2}
                   dataKey="total"
                 >

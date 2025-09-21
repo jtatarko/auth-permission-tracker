@@ -249,7 +249,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
         </div>
       </CardHeader>
       <CardContent className="overflow-visible border-r">
-        <div className="h-40 w-full overflow-visible">
+        <div className="h-20 w-full overflow-visible">
           {chartData.length === 0 || maxValue === 0 ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">

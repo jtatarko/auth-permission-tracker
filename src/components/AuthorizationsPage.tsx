@@ -237,7 +237,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
       {/* Analytics Dashboard */}
       <AnalyticsContainer
-        className="z-20"
+        className="z-20 relative"
         entityChanges={entityChanges}
         dateRange={state.chartDateRange}
         onDateRangeChange={handleChartDateRangeChange}
