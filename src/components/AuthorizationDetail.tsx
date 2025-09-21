@@ -104,7 +104,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           <Card className="adverity-card-elevated">
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex">
+                <div className="flex gap-2">
                   {getDataSourceIcon(authorization.type).endsWith(".svg") ? (
                     <img
                       src={getDataSourceIcon(authorization.type)}
