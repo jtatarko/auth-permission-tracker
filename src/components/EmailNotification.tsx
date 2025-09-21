@@ -53,7 +53,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
       {/* Email Content */}
       <div className="space-y-6">
         {/* Entity Changes Summary */}
-        <Card>
+        <Card className="adverity-card-elevated">
           <CardHeader>
             <CardTitle>
               {entityChanges.length} entity changes detected in the last 24

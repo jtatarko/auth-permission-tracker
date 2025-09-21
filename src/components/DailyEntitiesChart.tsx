@@ -224,7 +224,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
   };
 
   return (
-    <Card className={`${className}`}>
+    <Card className={`adverity-card ${className}`}>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>

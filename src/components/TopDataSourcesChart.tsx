@@ -148,7 +148,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
   };
 
   return (
-    <Card className={className}>
+    <Card className={`adverity-card ${className}`}>
       <CardHeader>
         <CardTitle className="text-gray-500 font-normal">
           By data source

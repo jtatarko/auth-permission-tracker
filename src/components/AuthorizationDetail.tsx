@@ -84,7 +84,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           onClick={() => (window.location.href = "/")}
           className="flex items-center hover:text-blue-600 transition-colors"
         >
-          <Home className="h-4 w-4 mr-1" />
+          {/* <Home className="h-4 w-4 mr-1" /> */}
           Testing
         </button>
         <ChevronRight className="h-4 w-4" />
@@ -101,7 +101,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
       {/* Authorization Header */}
       <div className="flex gap-4">
         <div>
-          <Card>
+          <Card className="adverity-card-elevated">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex">
@@ -182,7 +182,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           </Card>
 
           {/* Recent Activity */}
-          <Card>
+          <Card className="adverity-card">
             <CardHeader>
               <CardTitle className="text-md">Latest entity changes</CardTitle>
               {/* <CardDescription>Latest entity modifications</CardDescription> */}
@@ -197,7 +197,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                   {recentChanges.map((change) => (
                     <div
                       key={change.id}
-                      className="flex items-start space-x-3 text-sm p-2 bg-gray-50 rounded-sm"
+                      className="flex items-start space-x-3 text-sm p-2 bg-gray-50 rounded-lg"
                     >
                       <div className="flex-1 min-w-0">
                         <p
@@ -251,21 +251,21 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             </CardContent>
           </Card>
 
-          {/* Current Pemrms */}
-          <Card>
+          {/* Current Perms */}
+          <Card className="adverity-card">
             <CardHeader>
               <CardTitle className="text-md">Provide access to</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1">
-              <div className="p-2 bg-gray-50 rounded-sm">
+              <div className="p-2 bg-gray-50 rounded-md">
                 <p className="text-sm text-gray-800">
                   Ads Budget Management 301
                 </p>
               </div>
-              <div className="p-2 bg-gray-50 rounded-sm">
+              <div className="p-2 bg-gray-50 rounded-md">
                 <p className="text-sm text-gray-800">Reporting API Access 01</p>
               </div>
-              <div className="p-2 bg-gray-50 rounded-sm">
+              <div className="p-2 bg-gray-50 rounded-md">
                 <p className="text-sm text-gray-800">
                   Ads Creative Management 22
                 </p>
@@ -275,7 +275,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
         </div>
 
         {/* Used by Datastreams */}
-        <Card className="shadow-none bg-transparent border-none w-2/3">
+        <Card className="adverity-card w-2/3">
           <CardHeader>
             <CardTitle className="text-md">
               Used by {sampleDatastreams.length} Datastreams
@@ -286,11 +286,11 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           </CardDescription> */}
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               {sampleDatastreams.map((datastream, index) => (
                 <button
                   key={index}
-                  className="flex justify-between p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors bg-white"
+                  className="flex justify-between p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors bg-gray-50"
                   onClick={() =>
                     console.log("Navigate to datastream:", datastream)
                   }

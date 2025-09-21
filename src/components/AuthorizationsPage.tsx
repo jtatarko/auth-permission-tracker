@@ -194,11 +194,11 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Connected":
-        return "bg-green-100 text-green-800";
+        return "status-connected";
       case "Expired":
-        return "bg-red-100 text-red-800";
+        return "status-expired";
       case "Pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "status-pending";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -245,11 +245,11 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
       <div className="flex-col">
         {/* Filters and Actions */}
-        <Card className="sticky top-0 z-10 bg-gray-50 border-none shadow-none">
+        <Card className="sticky top-0 z-10 adverity-card-primary border-none shadow-none">
           {/* <CardHeader>
           <CardTitle className="text-lg">Filters & Actions</CardTitle>
         </CardHeader> */}
-          <CardContent className="space-y-4 p-4">
+          <CardContent className="spacing-cozy">
             {/* Filter Row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
@@ -392,8 +392,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
         </Card>
 
         {/* Authorizations Table */}
-        <Card>
-          <CardContent className="p-4">
+        <Card className="adverity-card-elevated">
+          <CardContent className="spacing-cozy">
             <Table>
               <TableHeader>
                 <TableRow>
