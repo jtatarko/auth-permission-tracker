@@ -1,28 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import type { AuthorizationDetailProps } from "@/data/types";
 import { formatDateShort, formatRelativeTime } from "@/utils/date-utils";
 import { getPermissionChangesForAuth } from "@/data/dummy-data";
 import PermissionsDrawer from "./PermissionsDrawer";
-import {
-  ChevronRight,
-  Home,
-  Calendar,
-  Activity,
-  Settings,
-  Eye,
-  Database,
-  Users,
-} from "lucide-react";
+import { ChevronRight, Home } from "lucide-react";
 
 const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   authorization,
@@ -87,9 +71,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   // Sample datastreams for display
   const sampleDatastreams = [
     `${authorization.type}_CampaignStats`,
-    `${authorization.type}_PerformanceData`,
+    `${authorization.type}_Performance`,
     `${authorization.type}_AudienceInsights`,
-    `${authorization.type}_ConversionTracking`,
+    `${authorization.type}_Conversions`,
   ].slice(0, authorization.datastreamsCount);
 
   return (
@@ -197,27 +181,6 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-md">Provide access to</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-1">
-              <div className="p-2 bg-gray-50 rounded-sm">
-                <p className="text-sm text-gray-800">
-                  Ads Budget Management 301
-                </p>
-              </div>
-              <div className="p-2 bg-gray-50 rounded-sm">
-                <p className="text-sm text-gray-800">Reporting API Access 01</p>
-              </div>
-              {/* <div className="p-2 bg-gray-50 rounded-sm">
-                <p className="text-sm text-gray-800">
-                  Ads Creative Management 22
-                </p>
-              </div> */}
-            </CardContent>
-          </Card>
-
           {/* Recent Activity */}
           <Card>
             <CardHeader>
@@ -289,13 +252,35 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
               </Button>
             </CardContent>
           </Card>
+
+          {/* Current Pemrms */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-md">Provide access to</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-1">
+              <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">
+                  Ads Budget Management 301
+                </p>
+              </div>
+              <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">Reporting API Access 01</p>
+              </div>
+              <div className="p-2 bg-gray-50 rounded-sm">
+                <p className="text-sm text-gray-800">
+                  Ads Creative Management 22
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Used by Datastreams */}
         <Card className="shadow-none bg-transparent border-none w-2/3">
           <CardHeader>
             <CardTitle className="text-md">
-              Used by {authorization.datastreamsCount} Datastreams
+              Used by {sampleDatastreams.length} Datastreams
             </CardTitle>
             {/* <CardDescription>
             This authorization is currently being used by the following
