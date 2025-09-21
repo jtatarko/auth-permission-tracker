@@ -99,6 +99,9 @@ export const generateEntityChanges = (authorizations: Authorization[]): EntityCh
   };
 
   for (let i = 0; i < totalChanges; i++) {
+    // Ensure first 3-5 changes are within last 24 hours for email demo
+    const isRecentChange = i < 5;
+    const recentCutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     // Select data source based on weights
     let selectedDataSource: DataSourceType;
     const random = Math.random();
@@ -118,8 +121,10 @@ export const generateEntityChanges = (authorizations: Authorization[]): EntityCh
     const auth = authsForSource[Math.floor(Math.random() * authsForSource.length)] || authorizations[0];
     const availableDatastreams = datastreamNames[selectedDataSource as keyof typeof datastreamNames] || [];
 
-    // Random date within last 90 days
-    const randomDate = new Date(ninetyDaysAgo.getTime() + Math.random() * (now.getTime() - ninetyDaysAgo.getTime()));
+    // Random date within last 90 days, but ensure some recent changes for email
+    const randomDate = isRecentChange
+      ? new Date(recentCutoff.getTime() + Math.random() * (now.getTime() - recentCutoff.getTime()))
+      : new Date(ninetyDaysAgo.getTime() + Math.random() * (now.getTime() - ninetyDaysAgo.getTime()));
 
     // Select 1-3 datastreams for this entity (reduced from 1-5)
     const selectedDatastreams: string[] = [];
@@ -173,5 +178,13 @@ export const getEntityChangesForAuth = (authId: string): EntityChange[] => {
 // Helper function to get recent entity changes for email notification
 export const getRecentEntityChanges = (days: number = 1): EntityChange[] => {
   const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-  return entityChanges.filter(change => change.dateTime >= cutoff);
+  const recentChanges = entityChanges.filter(change => change.dateTime >= cutoff);
+
+  // Ensure we always have at least one change for the email
+  if (recentChanges.length === 0 && entityChanges.length > 0) {
+    // Return the most recent change if no changes in the specified time period
+    return [entityChanges[0]];
+  }
+
+  return recentChanges;
 };
