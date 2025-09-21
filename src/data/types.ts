@@ -27,7 +27,7 @@ export interface Authorization {
   workspace: string;
   created: Date;
   lastUsed: Date | null;
-  permissionsCount: number;
+  entitiesCount: number;
   datastreamsCount: number;
   status: 'Connected' | 'Expired' | 'Pending';
 }
@@ -37,7 +37,7 @@ export interface EmailNotificationProps {
   onSeeDetails: (authId: string, emailDateRange: { from: Date; to: Date }) => void;
 }
 
-export interface PermissionsDrawerProps {
+export interface EntitiesDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   authorizationId: string;

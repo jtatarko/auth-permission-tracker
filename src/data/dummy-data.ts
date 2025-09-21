@@ -66,7 +66,7 @@ export const generateAuthorizations = (): Authorization[] => {
           workspace,
           created,
           lastUsed,
-          permissionsCount: Math.floor(Math.random() * 25) + 5, // 5-30 permissions
+          entitiesCount: Math.floor(Math.random() * 25) + 5, // 5-30 entities
           datastreamsCount: Math.floor(Math.random() * 10) + 2, // 2-12 datastreams
           status: Math.random() > 0.1 ? 'Connected' : (Math.random() > 0.5 ? 'Expired' : 'Pending')
         });

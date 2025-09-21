@@ -1,11 +1,11 @@
-# Adverity Permissions Tracking Demo
+# Adverity Entities Tracking Demo
 
-A browser-based demo application for user testing of Adverity's authorization permissions tracking system. This demo simulates the complete user flow from email notifications to detailed permission management without requiring a backend.
+A browser-based demo application for user testing of Adverity's authorization entities tracking system. This demo simulates the complete user flow from email notifications to detailed permission management without requiring a backend.
 
 ## Features
 
 - **Email Notification View**: Daily permission changes summary with email-like styling
-- **Permissions Drawer**: Detailed permission history with filtering, search, and export
+- **Entities Drawer**: Detailed permission history with filtering, search, and export
 - **Authorization Detail**: Comprehensive view of individual authorizations
 - **Authorizations Dashboard**: Main list with charts, filters, and bulk actions
 - **Interactive Charts**: Permission changes over time with Recharts
@@ -32,7 +32,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
 
 1. **Navigate to the project**
    ```bash
-   cd adverity-permissions-demo
+   cd adverity-entities-demo
    ```
 
 2. **Install dependencies**
@@ -55,7 +55,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
 ### Flow 1: Email → Authorization Detail → Drawer (Auto-opened)
 1. Start at `/email` - view daily email notification
 2. Click "See details" → navigates to authorization detail page
-3. **PermissionsDrawer opens automatically** with:
+3. **EntitiesDrawer opens automatically** with:
    - Date range pre-filtered to email date range
    - Data filtered to specific authorization
    - Drawer slides in from the right side
@@ -65,7 +65,7 @@ A browser-based demo application for user testing of Adverity's authorization pe
 ### Flow 2: Authorizations List → Detail → Drawer
 1. Start at `/authorizations` - main dashboard
 2. Click authorization name → navigates to detail page
-3. Click "View changes" → opens PermissionsDrawer
+3. Click "View changes" → opens EntitiesDrawer
 4. Export data from drawer
 
 ### Flow 3: Navigation via Breadcrumb
@@ -106,13 +106,13 @@ A browser-based demo application for user testing of Adverity's authorization pe
   - Datastreams integration
   - Settings panel
 
-### Permissions Drawer
-- **Component**: `PermissionsDrawer.tsx`
+### Entities Drawer
+- **Component**: `EntitiesDrawer.tsx`
 - **Features**:
   - Slides from right side of viewport
   - Date range filtering
   - Action filtering (Added/Removed)
-  - Search across permissions and datastreams
+  - Search across entities and datastreams
   - Sortable columns
   - CSV export
 
@@ -210,10 +210,10 @@ src/
 ├── components/
 │   ├── ui/                     # shadcn/ui components
 │   ├── EmailNotification.tsx   # Email summary component
-│   ├── PermissionsDrawer.tsx   # Permission changes drawer
+│   ├── EntitiesDrawer.tsx   # Permission changes drawer
 │   ├── AuthorizationDetail.tsx # Authorization detail page
 │   ├── AuthorizationsPage.tsx  # Main authorizations list
-│   ├── PermissionsChart.tsx    # Stacked chart component
+│   ├── EntitiesChart.tsx    # Stacked chart component
 │   └── ExportModal.tsx         # CSV export modal
 ├── data/
 │   ├── dummy-data.ts          # Generated dummy data
@@ -255,4 +255,4 @@ For questions about this demo:
 
 **Demo URL**: http://localhost:5174 (when running `npm run dev`)
 
-This demo provides a complete simulation of the Adverity permissions tracking system, designed for comprehensive user testing and feedback collection.
+This demo provides a complete simulation of the Adverity entities tracking system, designed for comprehensive user testing and feedback collection.

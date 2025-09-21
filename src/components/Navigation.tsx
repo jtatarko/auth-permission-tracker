@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Users } from "lucide-react";
 
 const Navigation: React.FC = () => {
-
   const navItems = [
     {
       path: "/email",
@@ -17,7 +16,7 @@ const Navigation: React.FC = () => {
       path: "/authorizations",
       label: "Authorizations Page",
       icon: Users,
-      description: "Manage authorization permissions",
+      description: "Manage authorization entities",
     },
   ];
 
@@ -26,9 +25,13 @@ const Navigation: React.FC = () => {
       <CardContent className="p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-sm">
-            <img src="/logos/Adverity_Brandmark.svg" alt="Adverity" className="h-6 w-6" />
+            <img
+              src="/logos/Adverity_Brandmark.svg"
+              alt="Adverity"
+              className="h-6 w-6"
+            />
             {/* <Home className="h-5 w-5 text-blue-600" /> */}
-            <span>Adverity Permissions Demo</span>
+            <span>Adverity Entities Demo</span>
           </div>
           <div className="flex space-x-2">
             <div className="mt-2 text-sm text-gray-600">Navigate between</div>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { PermissionChange } from "@/data/types";
 import { formatDateForInput } from "@/utils/date-utils";
 import { exportPermissionChangesToCSV } from "@/utils/csv-export";
-import DailyPermissionsChart from "./DailyPermissionsChart";
+import DailyEntitiesChart from "./DailyEntitiesChart";
 import TopDataSourcesChart from "./TopDataSourcesChart";
 import { Download } from "lucide-react";
 
@@ -23,14 +23,11 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   className = "overflow-visible",
 }) => {
   const handleExportCSV = () => {
-    exportPermissionChangesToCSV(
-      permissionChanges,
-      {
-        includeAdded: true,
-        includeRemoved: true,
-        dateRange: dateRange,
-      }
-    );
+    exportPermissionChangesToCSV(permissionChanges, {
+      includeAdded: true,
+      includeRemoved: true,
+      dateRange: dateRange,
+    });
   };
 
   return (
@@ -118,7 +115,7 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-5">
         {/* Daily View Chart - 3/5 width */}
-        <DailyPermissionsChart
+        <DailyEntitiesChart
           className="lg:col-span-4 shadow-none border-none"
           permissionChanges={permissionChanges}
           dateRange={dateRange}

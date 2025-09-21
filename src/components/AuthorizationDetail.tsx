@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import type { AuthorizationDetailProps } from "@/data/types";
 import { formatDateShort, formatRelativeTime } from "@/utils/date-utils";
 import { getPermissionChangesForAuth } from "@/data/dummy-data";
-import PermissionsDrawer from "./PermissionsDrawer";
+import EntitiesDrawer from "./EntitiesDrawer";
 import { ChevronRight, Home } from "lucide-react";
 
 const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
@@ -166,9 +166,9 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
                     <div className="text-2xl font-bold text-blue-600">
-                      {authorization.permissionsCount}
+                      {authorization.entitiesCount}
                     </div>
-                    <div className="text-sm text-gray-600">Permissions</div>
+                    <div className="text-sm text-gray-600">Entities</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-green-600">
@@ -319,7 +319,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             <span>Settings</span>
           </CardTitle>
           <CardDescription>
-            Manage authorization settings and permissions
+            Manage authorization settings and entities
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -330,7 +330,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
             </Button>
             <Button variant="outline" className="justify-start">
               <Activity className="h-4 w-4 mr-2" />
-              Refresh Permissions
+              Refresh Entities
             </Button>
             <Button variant="outline" className="justify-start">
               <Database className="h-4 w-4 mr-2" />
@@ -344,8 +344,8 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
         </CardContent>
       </Card> */}
 
-      {/* Permissions Drawer */}
-      <PermissionsDrawer
+      {/* Entities Drawer */}
+      <EntitiesDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         authorizationId={authorization.id}

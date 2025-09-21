@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,16 +6,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { formatDateForInput } from '@/utils/date-utils';
-import { exportPermissionChangesToCSV, type ExportOptions } from '@/utils/csv-export';
-import type { PermissionChange } from '@/data/types';
-import { Download, Calendar, Filter } from 'lucide-react';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatDateForInput } from "@/utils/date-utils";
+import {
+  exportPermissionChangesToCSV,
+  type ExportOptions,
+} from "@/utils/csv-export";
+import type { PermissionChange } from "@/data/types";
+import { Download, Calendar, Filter } from "lucide-react";
 
 interface ExportModalProps {
   isOpen: boolean;
@@ -28,32 +31,32 @@ const ExportModal: React.FC<ExportModalProps> = ({
   isOpen,
   onClose,
   permissionChanges,
-  title = 'Export Permission Changes'
+  title = "Export Permission Changes",
 }) => {
   const [dateRange, setDateRange] = useState({
     from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-    to: new Date()
+    to: new Date(),
   });
   const [includeAdded, setIncludeAdded] = useState(true);
   const [includeRemoved, setIncludeRemoved] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
 
   // Calculate preview stats
-  const previewData = permissionChanges.filter(change => {
+  const previewData = permissionChanges.filter((change) => {
     // Date range filter
     if (change.dateTime < dateRange.from || change.dateTime > dateRange.to) {
       return false;
     }
 
     // Action filter
-    if (!includeAdded && change.action === 'Added') return false;
-    if (!includeRemoved && change.action === 'Removed') return false;
+    if (!includeAdded && change.action === "Added") return false;
+    if (!includeRemoved && change.action === "Removed") return false;
 
     return true;
   });
 
-  const addedCount = previewData.filter(c => c.action === 'Added').length;
-  const removedCount = previewData.filter(c => c.action === 'Removed').length;
+  const addedCount = previewData.filter((c) => c.action === "Added").length;
+  const removedCount = previewData.filter((c) => c.action === "Removed").length;
 
   const handleExport = async () => {
     if (previewData.length === 0) return;
@@ -64,7 +67,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
       const exportOptions: ExportOptions = {
         includeAdded,
         includeRemoved,
-        dateRange
+        dateRange,
       };
 
       exportPermissionChangesToCSV(permissionChanges, exportOptions);
@@ -74,7 +77,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
         onClose();
       }, 500);
     } catch (error) {
-      console.error('Export failed:', error);
+      console.error("Export failed:", error);
     } finally {
       setIsExporting(false);
     }
@@ -83,13 +86,14 @@ const ExportModal: React.FC<ExportModalProps> = ({
   const handleReset = () => {
     setDateRange({
       from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-      to: new Date()
+      to: new Date(),
     });
     setIncludeAdded(true);
     setIncludeRemoved(true);
   };
 
-  const isValidExport = previewData.length > 0 && (includeAdded || includeRemoved);
+  const isValidExport =
+    previewData.length > 0 && (includeAdded || includeRemoved);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -100,7 +104,8 @@ const ExportModal: React.FC<ExportModalProps> = ({
             <span>{title}</span>
           </DialogTitle>
           <DialogDescription>
-            Configure your export settings and download permission changes as CSV
+            Configure your export settings and download permission changes as
+            CSV
           </DialogDescription>
         </DialogHeader>
 
@@ -122,7 +127,10 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     type="date"
                     value={formatDateForInput(dateRange.from)}
                     onChange={(e) =>
-                      setDateRange(prev => ({ ...prev, from: new Date(e.target.value) }))
+                      setDateRange((prev) => ({
+                        ...prev,
+                        from: new Date(e.target.value),
+                      }))
                     }
                     max={formatDateForInput(dateRange.to)}
                   />
@@ -136,7 +144,10 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     type="date"
                     value={formatDateForInput(dateRange.to)}
                     onChange={(e) =>
-                      setDateRange(prev => ({ ...prev, to: new Date(e.target.value) }))
+                      setDateRange((prev) => ({
+                        ...prev,
+                        to: new Date(e.target.value),
+                      }))
                     }
                     min={formatDateForInput(dateRange.from)}
                     max={formatDateForInput(new Date())}
@@ -160,10 +171,18 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     checked={includeAdded}
                     onCheckedChange={(checked) => setIncludeAdded(!!checked)}
                   />
-                  <Label htmlFor="include-added" className="text-sm cursor-pointer">
-                    Added permissions
+                  <Label
+                    htmlFor="include-added"
+                    className="text-sm cursor-pointer"
+                  >
+                    Added entities
                     <span className="text-gray-500 ml-1">
-                      ({permissionChanges.filter(c => c.action === 'Added').length})
+                      (
+                      {
+                        permissionChanges.filter((c) => c.action === "Added")
+                          .length
+                      }
+                      )
                     </span>
                   </Label>
                 </div>
@@ -173,10 +192,18 @@ const ExportModal: React.FC<ExportModalProps> = ({
                     checked={includeRemoved}
                     onCheckedChange={(checked) => setIncludeRemoved(!!checked)}
                   />
-                  <Label htmlFor="include-removed" className="text-sm cursor-pointer">
-                    Removed permissions
+                  <Label
+                    htmlFor="include-removed"
+                    className="text-sm cursor-pointer"
+                  >
+                    Removed entities
                     <span className="text-gray-500 ml-1">
-                      ({permissionChanges.filter(c => c.action === 'Removed').length})
+                      (
+                      {
+                        permissionChanges.filter((c) => c.action === "Removed")
+                          .length
+                      }
+                      )
                     </span>
                   </Label>
                 </div>
@@ -196,15 +223,21 @@ const ExportModal: React.FC<ExportModalProps> = ({
               ) : (
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <div className="text-lg font-bold text-green-600">{addedCount}</div>
+                    <div className="text-lg font-bold text-green-600">
+                      {addedCount}
+                    </div>
                     <div className="text-xs text-gray-600">Added</div>
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-red-600">{removedCount}</div>
+                    <div className="text-lg font-bold text-red-600">
+                      {removedCount}
+                    </div>
                     <div className="text-xs text-gray-600">Removed</div>
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-blue-600">{previewData.length}</div>
+                    <div className="text-lg font-bold text-blue-600">
+                      {previewData.length}
+                    </div>
                     <div className="text-xs text-gray-600">Total</div>
                   </div>
                 </div>
@@ -215,7 +248,8 @@ const ExportModal: React.FC<ExportModalProps> = ({
           {/* Validation Message */}
           {!isValidExport && (
             <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
-              Please select at least one action type and ensure your date range includes data.
+              Please select at least one action type and ensure your date range
+              includes data.
             </div>
           )}
         </div>

@@ -120,7 +120,7 @@ export const exportAuthorizationsToCSV = (
     'Workspace',
     'Created',
     'Last Used',
-    'Permissions Count',
+    'Entities Count',
     'Datastreams Count',
     'Status'
   ];
@@ -131,7 +131,7 @@ export const exportAuthorizationsToCSV = (
     auth.workspace,
     formatDateTime(auth.created),
     auth.lastUsed ? formatDateTime(auth.lastUsed) : 'Never',
-    auth.permissionsCount.toString(),
+    auth.entitiesCount.toString(),
     auth.datastreamsCount.toString(),
     auth.status
   ]);

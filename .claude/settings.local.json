@@ -1,5 +1,5 @@
 {
-  "permissions": {
+  "entities": {
     "allow": [
       "Bash(npm run build:*)",
       "Bash(npm run preview:*)",

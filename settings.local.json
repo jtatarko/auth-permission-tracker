@@ -1,5 +1,5 @@
 {
-  "permissions": {
+  "entities": {
     "allow": [
       "Bash(npm create:*)",
       "Bash(npm install)",

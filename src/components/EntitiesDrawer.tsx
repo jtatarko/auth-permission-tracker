@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { PermissionsDrawerProps } from "@/data/types";
+import type { EntitiesDrawerProps } from "@/data/types";
 import { getPermissionChangesForAuth } from "@/data/dummy-data";
 import {
   formatDateTime,
@@ -34,7 +34,7 @@ import {
 import { exportPermissionChangesToCSV } from "@/utils/csv-export";
 import { Search, Download, Calendar, ArrowUpDown } from "lucide-react";
 
-const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
+const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
   isOpen,
   onClose,
   authorizationId,
@@ -221,7 +221,7 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="Search permissions, IDs, or datastreams..."
+                    placeholder="Search entities, IDs, or datastreams..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
@@ -356,4 +356,4 @@ const PermissionsDrawer: React.FC<PermissionsDrawerProps> = ({
   );
 };
 
-export default PermissionsDrawer;
+export default EntitiesDrawer;

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -33,7 +28,6 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
     return b.dateTime.getTime() - a.dateTime.getTime();
   });
 
-
   const today = new Date();
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
@@ -48,7 +42,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
           </span>
         </div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Permissions Changes Summary
+          Entities Changes Summary
         </h1>
         <div className="flex items-center gap-2 mt-2">
           <Clock className="h-4 w-4 text-gray-500" />
@@ -87,58 +81,64 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               <TableBody>
                 {sortedPermissionChanges.slice(0, 10).map((change) => {
                   // Find the authorization name by authorizationId
-                  const authorization = authorizations.find(auth => auth.id === change.authorizationId);
+                  const authorization = authorizations.find(
+                    (auth) => auth.id === change.authorizationId
+                  );
                   const authorizationName = authorization
                     ? authorization.name
-                    : change.authorizationId.replace("auth-", "").replace(/-/g, " ");
+                    : change.authorizationId
+                        .replace("auth-", "")
+                        .replace(/-/g, " ");
 
                   return (
                     <TableRow key={change.id} className="text-gray-500">
                       <TableCell className="font-medium text-black">
                         {authorizationName}
                       </TableCell>
-                    <TableCell>{change.workspace}</TableCell>
-                    <TableCell>{change.dataSource}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          change.action === "Added" ? "default" : "destructive"
-                        }
-                        className={
-                          change.action === "Added"
-                            ? "bg-gray-50 text-gray-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }
-                      >
-                        {change.action}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="max-w-xs truncate text-black">
-                      {change.permissionName}
-                    </TableCell>
-                    {/* <TableCell className="text-sm text-gray-600">
+                      <TableCell>{change.workspace}</TableCell>
+                      <TableCell>{change.dataSource}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            change.action === "Added"
+                              ? "default"
+                              : "destructive"
+                          }
+                          className={
+                            change.action === "Added"
+                              ? "bg-gray-50 text-gray-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }
+                        >
+                          {change.action}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="max-w-xs truncate text-black">
+                        {change.permissionName}
+                      </TableCell>
+                      {/* <TableCell className="text-sm text-gray-600">
                       {formatDate(change.dateTime)}
                     </TableCell> */}
-                    <TableCell>
-                      <span className="text-sm font-medium">
-                        {change.usedInDatastreams}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          onSeeDetails(change.authorizationId, {
-                            from: yesterday,
-                            to: today,
-                          })
-                        }
-                      >
-                        See details
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                      <TableCell>
+                        <span className="text-sm font-medium">
+                          {change.usedInDatastreams}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            onSeeDetails(change.authorizationId, {
+                              from: yesterday,
+                              to: today,
+                            })
+                          }
+                        >
+                          See details
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
               </TableBody>
@@ -176,7 +176,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               <div className="text-2xl font-bold text-green-600">
                 {permissionChanges.filter((c) => c.action === "Added").length}
               </div>
-              <div className="text-sm text-gray-600">Permissions Added</div>
+              <div className="text-sm text-gray-600">Entities Added</div>
             </CardContent>
           </Card>
           <Card>
@@ -184,7 +184,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
               <div className="text-2xl font-bold text-red-600">
                 {permissionChanges.filter((c) => c.action === "Removed").length}
               </div>
-              <div className="text-sm text-gray-600">Permissions Removed</div>
+              <div className="text-sm text-gray-600">Entities Removed</div>
             </CardContent>
           </Card> */}
           {/* <Card>

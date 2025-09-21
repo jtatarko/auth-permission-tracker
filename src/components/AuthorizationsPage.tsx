@@ -231,7 +231,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Authorizations</h1>
         <p className="text-gray-600 mt-2">
-          Manage and monitor your data source authorizations
+          Grant Adverity access to data sources and destinations.
         </p>
       </div>
 
@@ -462,7 +462,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
-                  <TableHead className="text-xs">Permissions</TableHead>
+                  <TableHead className="text-xs">Entities</TableHead>
                   <TableHead className="text-xs">Datastreams</TableHead>
                   <TableHead>
                     <Button
@@ -522,9 +522,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                         : "Never"}
                     </TableCell>
                     <TableCell>
-                      <span className="font-medium">
-                        {auth.permissionsCount}
-                      </span>
+                      <span className="font-medium">{auth.entitiesCount}</span>
                     </TableCell>
                     <TableCell>
                       <span className="font-medium">
