@@ -34,10 +34,7 @@ interface ChartDataPoint {
   total: number;
   addedAuthorizations: AuthorizationChange[];
   removedAuthorizations: AuthorizationChange[];
-  maxValue?: number;
-  minValue?: number;
 }
-
 
 const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
   entityChanges,
@@ -99,21 +96,13 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
       currentDate = addDays(currentDate, 1);
     }
 
-    // Calculate max and min values and add them to each data point
-    const maxValue = Math.max(...data.map((d) => d.added));
-    const minValue = Math.min(...data.map((d) => d.removed));
-
-    return data.map(point => ({
-      ...point,
-      maxValue,
-      minValue
-    }));
+    return data;
   }, [entityChanges, dateRange]);
 
   const totalAdded = chartData.reduce((sum, day) => sum + day.added, 0);
-  const totalRemoved = Math.abs(chartData.reduce((sum, day) => sum + day.removed, 0));
-  const maxValue = Math.max(...chartData.map((d) => d.added));
-  const minValue = Math.min(...chartData.map((d) => d.removed));
+  const totalRemoved = Math.abs(
+    chartData.reduce((sum, day) => sum + day.removed, 0)
+  );
 
   const getDataSourceIcon = (type: string) => {
     switch (type) {
@@ -262,8 +251,9 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
         </div>
       </CardHeader>
       <CardContent className="overflow-visible border-r">
-        <div className="h-24 w-full overflow-visible">
-          {chartData.length === 0 || maxValue === 0 ? (
+        <div className="h-32 w-full overflow-visible">
+          {chartData.length === 0 ||
+          chartData.every((d) => d.added === 0 && d.removed === 0) ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">
                 <div className="text-4xl mb-2">📊</div>
@@ -274,6 +264,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
+                stackOffset="sign"
                 margin={{
                   top: 20,
                   right: 30,
@@ -292,7 +283,6 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
                   tick={{ fontSize: 12 }}
                   tickLine={{ stroke: "#e0e0e0" }}
                   axisLine={{ stroke: "#e0e0e0" }}
-                  domain={[minValue, maxValue]}
                 />
                 <Tooltip
                   content={<CustomTooltip />}
@@ -301,15 +291,15 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
                 <ReferenceLine y={0} stroke="#999" strokeDasharray="2 2" />
                 <Bar
                   dataKey="added"
+                  stackId="stack"
                   fill="#D4D4D4"
                   name="Added"
-                  radius={[2, 2, 0, 0]}
                 />
                 <Bar
                   dataKey="removed"
+                  stackId="stack"
                   fill="#eab308"
                   name="Removed"
-                  radius={[0, 0, 2, 2]}
                 />
               </BarChart>
             </ResponsiveContainer>
