@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { EntityChange } from "@/data/types";
@@ -33,7 +34,10 @@ interface ChartDataPoint {
   total: number;
   addedAuthorizations: AuthorizationChange[];
   removedAuthorizations: AuthorizationChange[];
+  maxValue?: number;
+  minValue?: number;
 }
+
 
 const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
   entityChanges,
@@ -86,7 +90,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
       data.push({
         date: format(currentDate, "MMM d"),
         added: addedChanges.length,
-        removed: removedChanges.length,
+        removed: -removedChanges.length, // Negative for diverging chart
         total: addedChanges.length + removedChanges.length,
         addedAuthorizations,
         removedAuthorizations,
@@ -95,12 +99,21 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
       currentDate = addDays(currentDate, 1);
     }
 
-    return data;
+    // Calculate max and min values and add them to each data point
+    const maxValue = Math.max(...data.map((d) => d.added));
+    const minValue = Math.min(...data.map((d) => d.removed));
+
+    return data.map(point => ({
+      ...point,
+      maxValue,
+      minValue
+    }));
   }, [entityChanges, dateRange]);
 
   const totalAdded = chartData.reduce((sum, day) => sum + day.added, 0);
-  const totalRemoved = chartData.reduce((sum, day) => sum + day.removed, 0);
-  const maxValue = Math.max(...chartData.map((d) => d.total));
+  const totalRemoved = Math.abs(chartData.reduce((sum, day) => sum + day.removed, 0));
+  const maxValue = Math.max(...chartData.map((d) => d.added));
+  const minValue = Math.min(...chartData.map((d) => d.removed));
 
   const getDataSourceIcon = (type: string) => {
     switch (type) {
@@ -173,12 +186,12 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
           )}
 
           {/* Removed Section */}
-          {data.removed > 0 && (
+          {data.removed < 0 && (
             <div className="mb-2">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-3 h-3 rounded bg-yellow-600" />
                 <span className="text-sm font-medium text-gray-700">
-                  Removed ({data.removed})
+                  Removed ({Math.abs(data.removed)})
                 </span>
               </div>
               <div className="space-y-1 ml-5">
@@ -279,25 +292,24 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
                   tick={{ fontSize: 12 }}
                   tickLine={{ stroke: "#e0e0e0" }}
                   axisLine={{ stroke: "#e0e0e0" }}
-                  domain={[0, maxValue]}
+                  domain={[minValue, maxValue]}
                 />
                 <Tooltip
                   content={<CustomTooltip />}
                   cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                 />
+                <ReferenceLine y={0} stroke="#999" strokeDasharray="2 2" />
                 <Bar
                   dataKey="added"
-                  stackId="a"
                   fill="#D4D4D4"
                   name="Added"
-                  radius={[0, 0, 4, 4]}
+                  radius={[2, 2, 0, 0]}
                 />
                 <Bar
                   dataKey="removed"
-                  stackId="a"
                   fill="#eab308"
                   name="Removed"
-                  radius={[2, 2, 0, 0]}
+                  radius={[0, 0, 2, 2]}
                 />
               </BarChart>
             </ResponsiveContainer>
