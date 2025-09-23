@@ -8,5 +8,10 @@
     ],
     "deny": [],
     "ask": []
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)"
+    ]
   }
 }

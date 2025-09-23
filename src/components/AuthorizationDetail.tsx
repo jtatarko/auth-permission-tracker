@@ -6,7 +6,7 @@ import type { AuthorizationDetailProps } from "@/data/types";
 import { formatDateShort, formatRelativeTime } from "@/utils/date-utils";
 import { getEntityChangesForAuth } from "@/data/dummy-data";
 import EntitiesDrawer from "./EntitiesDrawer";
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   authorization,
