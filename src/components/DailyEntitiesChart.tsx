@@ -130,7 +130,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
       const data = payload[0]?.payload as ChartDataPoint;
 
       return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs z-[9999] relative">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 max-w-xs z-[9999] relative">
           <p className="font-semibold text-gray-900 text-sm mb-2">{label}</p>
 
           {/* Added Section */}
@@ -226,7 +226,7 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
   };
 
   return (
-    <Card className={`adverity-card ${className}`}>
+    <Card className={`${className}`}>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
@@ -292,13 +292,13 @@ const DailyEntitiesChart: React.FC<DailyEntitiesChartProps> = ({
                 <Bar
                   dataKey="added"
                   stackId="stack"
-                  fill="#D4D4D4"
+                  fill="var(--chart-1)"
                   name="Added"
                 />
                 <Bar
                   dataKey="removed"
                   stackId="stack"
-                  fill="#eab308"
+                  fill="var(--chart-5)"
                   name="Removed"
                 />
               </BarChart>

@@ -37,7 +37,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Connected":
-        return "bg-green-100 text-green-800";
+        return "bg-green-50 text-green-800";
       case "Expired":
         return "bg-red-100 text-red-800";
       case "Pending":
@@ -101,7 +101,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
       {/* Authorization Header */}
       <div className="flex gap-4">
         <div>
-          <Card className="adverity-card-elevated">
+          <Card className="border-b">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex gap-2">
@@ -182,7 +182,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           </Card>
 
           {/* Recent Activity */}
-          <Card className="adverity-card">
+          <Card className="border-b">
             <CardHeader>
               <CardTitle className="text-md">Latest entity changes</CardTitle>
               {/* <CardDescription>Latest entity modifications</CardDescription> */}
@@ -252,7 +252,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           </Card>
 
           {/* Current Perms */}
-          <Card className="adverity-card">
+          <Card>
             <CardHeader>
               <CardTitle className="text-md">Provide access to</CardTitle>
             </CardHeader>
@@ -275,7 +275,7 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
         </div>
 
         {/* Used by Datastreams */}
-        <Card className="adverity-card w-2/3">
+        <Card className="w-2/3">
           <CardHeader>
             <CardTitle className="text-md">
               Used by {sampleDatastreams.length} Datastreams
@@ -286,11 +286,11 @@ const AuthorizationDetail: React.FC<AuthorizationDetailProps> = ({
           </CardDescription> */}
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               {sampleDatastreams.map((datastream, index) => (
                 <button
                   key={index}
-                  className="flex justify-between p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors bg-gray-50"
+                  className="flex justify-between p-3 text-left rounded-lg hover:bg-gray-50 transition-colors bg-blue-50"
                   onClick={() =>
                     console.log("Navigate to datastream:", datastream)
                   }

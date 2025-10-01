@@ -21,7 +21,7 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <Card className="bg-white w-screen shadow-none border-none fixed bottom-0 z-10">
+    <Card className="bg-white w-screen shadow-none border-t fixed bottom-0 z-10">
       <CardContent className="p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-sm">

@@ -46,13 +46,13 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
   };
 
   const dataSourceColors = {
-    Meta: "#1877F2",
-    "Google Ads": "#4285F4",
-    "Amazon Advertising": "#FF9900",
-    "Google Sheets": "#34A853",
-    "LinkedIn Ads": "#0A66C2",
-    "TikTok Ads": "#000000",
-    "Twitter Ads": "#1DA1F2",
+    Meta: "var(--chart-1)",
+    "Google Ads": "var(--chart-2)",
+    "Amazon Advertising": "var(--chart-3)",
+    "Google Sheets": "var(--chart-4)",
+    "LinkedIn Ads": "var(--chart-5)",
+    "TikTok Ads": "var(--chart-1)",
+    "Twitter Ads": "var(--chart-2)",
   };
 
   const chartData = useMemo(() => {
@@ -78,7 +78,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
           percentage: 0,
           color:
             dataSourceColors[dataSource as keyof typeof dataSourceColors] ||
-            "#6B7280",
+            "var(--muted-foreground)",
         };
       }
 
@@ -148,7 +148,7 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
   };
 
   return (
-    <Card className={`adverity-card ${className}`}>
+    <Card className={`${className}`}>
       <CardHeader>
         <CardTitle className="text-gray-500 font-normal">
           By data source
@@ -167,7 +167,6 @@ const TopDataSourcesChart: React.FC<TopDataSourcesChartProps> = ({
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  className="opacity-80"
                   data={chartData}
                   cx="50%"
                   cy="50%"

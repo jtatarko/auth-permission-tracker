@@ -1,131 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Avenir:wght@400;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Adverity Brand Colors */
-  --brand-secondary: #F4F8FF;
-  --brand-secondary-highlighted: #D7E5FF;
-  --brand-secondary-active: #B8D1FF;
-  --brand-active: #4071F7;
-  --brand-highlighted: #2950E3;
-  --brand: #1839A0;
-  --brand-text: #182447;
-  --brand-background-inverted: #0B1947;
-  --brand-accent-light-01: #E7E247;
-  --brand-accent-light-02: #F4AFB4;
-  --brand-accent-light-03: #00FFC5;
-  --brand-accent-01: #FF7477;
-  --brand-accent-02: #4FBFFF;
-  --brand-accent-dark-01: #313D5A;
+  --font-size: 14px;
+  /* Typography variables */
+  --text-2xl: 40px;
+  --text-xl: 24px;
+  --text-lg: 20px;
+  --text-base: 16px;
+  --text-sm: 14px;
+  --text-xs: 12px;
 
-  /* Updated Theme Colors with Adverity Brand */
-  --background: 0 0% 99%;
-  --foreground: 228 84% 15%;
-  --card: 0 0% 100%;
-  --card-foreground: 228 84% 15%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 228 84% 15%;
-  --primary: 228 77% 31%;  /* Brand blue */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 226 100% 97%;  /* Brand secondary light */
-  --secondary-foreground: 228 84% 15%;
-  --muted: 226 100% 97%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 223 100% 94%;  /* Brand secondary highlighted */
-  --accent-foreground: 228 84% 15%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 94%;
-  --input: 214.3 31.8% 94%;
-  --ring: 228 77% 31%;
-  --chart-1: 204 100% 64%;  /* Brand accent 02 */
-  --chart-2: 56 85% 60%;    /* Brand accent light 01 */
-  --chart-3: 358 100% 73%;  /* Brand accent 01 */
-  --chart-4: 164 100% 50%;  /* Brand accent light 03 */
-  --chart-5: 352 100% 79%;  /* Brand accent light 02 */
-  --radius: 0.75rem;
+  /* The default background color for the application. */
+  --background: rgba(255, 255, 255, 1.00);
+  /* The default color for elements or text that appears on top of the background. */
+  --foreground: rgba(17, 25, 40, 1.00);
+  /* The background color for cards, modals, and other containers. */
+  --card: rgba(255, 255, 255, 1.00);
+  /* The default color for text or elements that appear on top of cards, modals and other background containers. */
+  --card-foreground: rgba(17, 25, 40, 1.00);
+  /* The background color for dropdowns and tooltips. */
+  --popover: rgba(255, 255, 255, 1.00);
+  /* The default color for text or elements that appear on top of dropdowns and tooltips. */
+  --popover-foreground: rgba(17, 25, 40, 1.00);
+  /* The primary color used for buttons, links, and other interactive elements. */
+  --primary: rgba(24, 57, 160, 1.00);
+  /* The default color for text or elements that appear on top of primary colored elements. */
+  --primary-foreground: rgba(255, 255, 255, 1.00);
+  /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
+  --secondary: rgba(184, 209, 255, 1.00);
+  /* The default color for text or elements that appear on top of secondary colored elements. */
+  --secondary-foreground: rgba(22, 49, 126, 1.00);
+  /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
+  --muted: rgba(248, 249, 249, 1.00);
+  /* The default color for text or elements that appear on top of muted colored elements. */
+  --muted-foreground: rgba(132, 148, 159, 1.00);
+  /* The accent color used for highlights, links, and other interactive elements. */
+  --accent: rgba(215, 229, 255, 1.00);
+  /* The default color for text or elements that appear on top of accent colored elements. */
+  --accent-foreground: rgba(17, 25, 40, 1.00);
+  /* The color used for background in destructive actions, such as delete buttons or error messages. */
+  --destructive: rgba(248, 232, 231, 1.00);
+  /* The default color for text or elements that appear on top of destructive colored elements. */
+  --destructive-foreground: rgba(118, 40, 36, 1.00);
+  /* The default border color for elements such as inputs, buttons, and other containers. */
+  --border: rgba(221, 224, 228, 1.00);
+  /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
+  --input: rgba(255, 255, 255, 1.00);
+  /* The default background color for input fields, text areas, and other input elements. */
+  --input-background: rgba(255, 255, 255, 1.00);
+  /* The default font weight for medium text. */
+  --font-weight-medium: 400;
+  /* The default font weight for normal text. */
+  --font-weight-normal: 400;
+  /* The default font weight for heavy text. */
+  --font-weight-heavy: 900;
+  /* The color for focus rings, outlines, and other focus indicators. */
+  --ring: rgba(24, 57, 160, 1.00);
+  /* Shadow for small elevations, such as cards or modals. */
+  --elevation-sm: 0px 6px 13px 0px rgba(0,0,0,0.15), 0px 0px 10px 0px rgba(0,0,0,0.08);
+  /* The color for chart elements, such as a bar or line in a chart. */
+  --chart-1: rgba(24, 57, 160, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-2: rgba(0, 156, 245, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-3: rgba(7, 177, 166, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-4: rgba(77, 155, 95, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-5: rgba(196, 166, 80, 1.00);
+  /* The default border radius for elements such as buttons, tooltip, and other containers. */
+  --radius: 5px;
+  /* The background color for sidebars, navigation menus, and other persistent elements. */
+  --sidebar: rgba(248, 249, 249, 1.00);
+  /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
+  --sidebar-foreground: rgba(17, 25, 40, 1.00);
+  /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-primary: rgba(24, 57, 160, 1.00);
+  /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
+  --sidebar-primary-foreground: rgba(255, 255, 255, 1.00);
+  /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-accent: rgba(215, 229, 255, 1.00);
+  /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
+  --sidebar-accent-foreground: rgba(17, 25, 40, 1.00);
+  /* The default border color for elements in sidebars and navigation menus. */
+  --sidebar-border: rgba(221, 224, 228, 1.00);
+  /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
+  --sidebar-ring: rgba(24, 57, 160, 1.00);
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+  --background: rgba(17, 25, 40, 1.00);
+  --foreground: rgba(255, 255, 255, 1.00);
+  --card: rgba(40, 48, 66, 1.00);
+  --card-foreground: rgba(255, 255, 255, 1.00);
+  --popover: rgba(40, 48, 66, 1.00);
+  --popover-foreground: rgba(255, 255, 255, 1.00);
+  --primary: rgba(184, 209, 255, 1.00);
+  --primary-foreground: rgba(17, 25, 40, 1.00);
+  --secondary: rgba(40, 48, 66, 1.00);
+  --secondary-foreground: rgba(184, 209, 255, 1.00);
+  --muted: rgba(40, 48, 66, 1.00);
+  --muted-foreground: rgba(132, 148, 159, 1.00);
+  --accent: rgba(40, 48, 66, 1.00);
+  --accent-foreground: rgba(184, 209, 255, 1.00);
+  --destructive: rgba(118, 40, 36, 1.00);
+  --destructive-foreground: rgba(248, 232, 231, 1.00);
+  --border: rgba(60, 68, 85, 1.00);
+  --input: rgba(40, 48, 66, 1.00);
+  --ring: rgba(184, 209, 255, 1.00);
+  --font-weight-medium: 400;
+  --font-weight-normal: 400;
+  --font-weight-heavy: 900;
+  --chart-1: rgba(184, 209, 255, 1.00);
+  --chart-2: rgba(0, 156, 245, 1.00);
+  --chart-3: rgba(7, 177, 166, 1.00);
+  --chart-4: rgba(77, 155, 95, 1.00);
+  --chart-5: rgba(196, 166, 80, 1.00);
+  --sidebar: rgba(30, 38, 55, 1.00);
+  --sidebar-foreground: rgba(255, 255, 255, 1.00);
+  --sidebar-primary: rgba(184, 209, 255, 1.00);
+  --sidebar-primary-foreground: rgba(17, 25, 40, 1.00);
+  --sidebar-accent: rgba(40, 48, 66, 1.00);
+  --sidebar-accent-foreground: rgba(184, 209, 255, 1.00);
+  --sidebar-border: rgba(60, 68, 85, 1.00);
+  --sidebar-ring: rgba(184, 209, 255, 1.00);
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Avenir', sans-serif;
+    margin: 0;
+  }
 }
 
-/* Enhanced Card Styling */
+html {
+  font-size: var(--font-size);
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.25;
+    }
+
+    h4 {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    p {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    input {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    .badge {
+      font-family: 'Avenir', sans-serif;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-heavy);
+      line-height: 1.5;
+    }
+  }
+}
+
+/* Enhanced Card Styling with Adverity Design System */
 .adverity-card {
-  @apply bg-white rounded-xl shadow-sm border border-slate-200/60 transition-all duration-200;
+  @apply bg-card text-card-foreground transition-all duration-200;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--elevation-sm);
 }
 
 .adverity-card:hover {
-  @apply shadow-md border-slate-200;
   transform: translateY(-1px);
+  box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.15), 0px 2px 12px 0px rgba(0,0,0,0.08);
 }
 
-.adverity-card-elevated {
-  @apply bg-white rounded-xl shadow-lg border border-slate-200/60 transition-all duration-200;
-  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
-  box-shadow: 0 8px 32px rgba(24, 57, 160, 0.04), 0 2px 8px rgba(24, 57, 160, 0.08);
-}
-
-.adverity-card-primary {
-  @apply rounded-xl shadow-sm border transition-all duration-200 bg-gray-50;
-  border-color: rgba(184, 209, 255, 0.3);
-}
-
-/* Status Colors using Brand Palette */
+/* Status Colors using Adverity Design System */
 .status-connected {
-  @apply rounded-md px-2 py-1 text-xs font-medium border;
-  background-color: rgba(0, 255, 197, 0.1);
-  color: #00a885;
-  border-color: rgba(0, 255, 197, 0.2);
+  @apply px-2 py-1 text-xs font-heavy border;
+  background-color: rgba(77, 155, 95, 0.1);
+  color: rgba(77, 155, 95, 1.00);
+  border-color: rgba(77, 155, 95, 0.2);
+  border-radius: var(--radius);
 }
 
 .status-expired {
-  @apply rounded-md px-2 py-1 text-xs font-medium border;
-  background-color: rgba(255, 116, 119, 0.1);
-  color: #e63946;
-  border-color: rgba(255, 116, 119, 0.2);
+  @apply px-2 py-1 text-xs font-heavy border;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+  border-color: rgba(118, 40, 36, 0.2);
+  border-radius: var(--radius);
 }
 
 .status-pending {
-  @apply rounded-md px-2 py-1 text-xs font-medium border;
-  background-color: rgba(231, 226, 71, 0.1);
-  color: #b45309;
-  border-color: rgba(231, 226, 71, 0.2);
+  @apply px-2 py-1 text-xs font-heavy border;
+  background-color: rgba(196, 166, 80, 0.1);
+  color: rgba(196, 166, 80, 1.00);
+  border-color: rgba(196, 166, 80, 0.2);
+  border-radius: var(--radius);
 }
 
 /* Modern Spacing System */
@@ -139,29 +269,4 @@ body {
 
 .spacing-compact {
   @apply p-3 space-y-3;
-}
-
-/* Enhanced Typography */
-.text-brand {
-  color: var(--brand);
-}
-
-.text-brand-muted {
-  color: var(--brand-accent-dark-01);
-}
-
-/* Improved Button Styling */
-.btn-brand {
-  @apply text-white transition-all duration-200 shadow-sm;
-  background-color: #1839A0;
-}
-
-.btn-brand:hover {
-  background-color: #2950E3;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(24, 57, 160, 0.2);
-}
-
-input {
-  @apply bg-white !important;
 }

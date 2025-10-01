@@ -31,7 +31,7 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   };
 
   return (
-    <div className={`${className}`}>
+    <div className={`${className} shadow rounded-lg`}>
       {/* Date Range Controls */}
       <Card className="shadow-none border-none">
         <CardHeader className="border-b">
@@ -47,8 +47,8 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
               <span>Export CSV</span>
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
+          <div className="gap-4 flex w-1/2">
+            <div className="w-1/2">
               <label className="block text-sm font-medium mb-1">From</label>
               <Input
                 type="date"
@@ -62,7 +62,7 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
                 className="text-sm"
               />
             </div>
-            <div>
+            <div className="w-1/2">
               <label className="block text-sm font-medium mb-1">To</label>
               <Input
                 type="date"

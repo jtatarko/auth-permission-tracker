@@ -41,7 +41,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
             notifications@adverity.com
           </span>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-xl font-bold text-gray-900">
           Entities Changes Summary
         </h1>
         <div className="flex items-center gap-2 mt-2">
@@ -53,7 +53,7 @@ const EmailNotification: React.FC<EmailNotificationProps> = ({
       {/* Email Content */}
       <div className="space-y-6">
         {/* Entity Changes Summary */}
-        <Card className="adverity-card-elevated">
+        <Card>
           <CardHeader>
             <CardTitle>
               {entityChanges.length} entity changes detected in the last 24

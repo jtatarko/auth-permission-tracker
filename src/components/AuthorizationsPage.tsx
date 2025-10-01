@@ -194,11 +194,11 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Connected":
-        return "status-connected";
+        return "bg-green-50 text-green-800";
       case "Expired":
-        return "status-expired";
+        return "bg-red-100 text-red-800";
       case "Pending":
-        return "status-pending";
+        return "bg-yellow-100 text-yellow-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -229,8 +229,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-medium text-gray-900">Authorizations</h1>
-        <p className="text-gray-500 mt-2 text-sm">
+        <h1 className="text-2xl font-medium text-gray-900">Authorizations</h1>
+        <p className="text-gray-500 text-sm">
           Grant Adverity access to data sources and destinations.
         </p>
       </div>
@@ -245,7 +245,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
       <div className="flex-col">
         {/* Filters and Actions */}
-        <Card className="sticky top-0 z-10 adverity-card-primary border-none shadow-none">
+        <Card className="sticky top-0 z-10 adverity-card-primary">
           {/* <CardHeader>
           <CardTitle className="text-lg">Filters & Actions</CardTitle>
         </CardHeader> */}
@@ -351,7 +351,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
             </div>
 
             {/* Actions Row */}
-            <div className="flex justify-between items-center pt-2 border-t">
+            <div className="flex justify-between items-center">
               <div className="text-sm text-gray-600">
                 {filteredAuthorizations.length} authorization
                 {filteredAuthorizations.length !== 1 ? "s" : ""} found
@@ -392,7 +392,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
         </Card>
 
         {/* Authorizations Table */}
-        <Card className="adverity-card-elevated">
+        <Card>
           <CardContent className="spacing-cozy">
             <Table>
               <TableHeader>
@@ -494,7 +494,7 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
                           <img
                             src={getDataSourceIcon(auth.type)}
                             alt={auth.type}
-                            className="w-5 h-5"
+                            className="w-8 h-8"
                           />
                         ) : (
                           <span className="text-lg">

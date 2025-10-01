@@ -137,7 +137,7 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
       const data = payload[0]?.payload as ChartDataPoint;
 
       return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs z-[9999] relative">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 max-w-xs z-[9999] relative">
           <p className="font-semibold text-gray-900 text-sm mb-2">{label}</p>
 
           {/* Added Section */}
@@ -370,14 +370,14 @@ const EntitiesChart: React.FC<EntitiesChartProps> = ({
                     <Bar
                       dataKey="added"
                       stackId="a"
-                      fill="#A0C0FF"
+                      fill="var(--chart-1)"
                       name="Added"
                       radius={[0, 0, 4, 4]}
                     />
                     <Bar
                       dataKey="removed"
                       stackId="a"
-                      fill="#eab308"
+                      fill="var(--chart-5)"
                       name="Removed"
                       radius={[2, 2, 0, 0]}
                     />

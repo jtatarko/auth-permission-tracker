@@ -287,14 +287,14 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
                       <ArrowUpDown className="h-3 w-3 ml-1" />
                     </Button>
                   </TableHead>
-                  <TableHead className="text-xs">Perm ID</TableHead>
+                  <TableHead className="text-xs">Entity ID</TableHead>
                   <TableHead className="text-xs">Used in Datastreams</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredChanges.map((change) => (
                   <TableRow key={change.id}>
-                    <TableCell className="font-mono text-sm">
+                    <TableCell className="font-mono text-xs">
                       {formatDateTime(change.dateTime)}
                     </TableCell>
                     <TableCell>
@@ -316,7 +316,7 @@ const EntitiesDrawer: React.FC<EntitiesDrawerProps> = ({
                         {change.entityName}
                       </div>
                     </TableCell>
-                    <TableCell className="font-mono text-sm text-gray-600">
+                    <TableCell className="font-mono text-xs text-gray-600">
                       {change.id}
                     </TableCell>
                     <TableCell>
