@@ -7,13 +7,15 @@ import { formatDateForInput } from "@/utils/date-utils";
 import { exportEntityChangesToCSV } from "@/utils/csv-export";
 import DailyEntitiesChart from "./DailyEntitiesChart";
 import TopDataSourcesChart from "./TopDataSourcesChart";
-import { Download } from "lucide-react";
+import { Download, Lock } from "lucide-react";
 
 interface AnalyticsContainerProps {
   entityChanges: EntityChange[];
   dateRange: { from: Date; to: Date };
   onDateRangeChange: (dateRange: { from: Date; to: Date }) => void;
   className?: string;
+  hasFeatureAccess: boolean;
+  onFeatureRequest: () => void;
 }
 
 const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
@@ -21,6 +23,8 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   dateRange,
   onDateRangeChange,
   className = "overflow-visible",
+  hasFeatureAccess,
+  onFeatureRequest,
 }) => {
   const handleExportCSV = () => {
     exportEntityChangesToCSV(entityChanges, {
@@ -32,8 +36,25 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
 
   return (
     <div className={`${className} shadow rounded-lg`}>
+      {/* Limited Access Banner */}
+      {!hasFeatureAccess && (
+        <div className="bg-blue-50 border border-blue-200 rounded-t-lg px-4 py-3 flex items-center gap-2">
+          <Lock className="h-4 w-4 text-blue-600" />
+          <p className="text-sm text-blue-800">
+            <span className="font-medium">Limited to last 7 days.</span>{" "}
+            <button
+              onClick={onFeatureRequest}
+              className="underline hover:no-underline font-medium"
+            >
+              Request access
+            </button>{" "}
+            to view custom date ranges and full history.
+          </p>
+        </div>
+      )}
+
       {/* Date Range Controls */}
-      <Card className="shadow-none border-none">
+      <Card className={`shadow-none border-none ${!hasFeatureAccess ? "rounded-t-none" : ""}`}>
         <CardHeader className="border-b">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Entity Changes</CardTitle>
@@ -59,7 +80,9 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
                     from: new Date(e.target.value),
                   })
                 }
-                className="text-sm"
+                className={`text-sm ${!hasFeatureAccess ? "cursor-pointer" : ""}`}
+                disabled={!hasFeatureAccess}
+                onClick={!hasFeatureAccess ? onFeatureRequest : undefined}
               />
             </div>
             <div className="w-1/2">
@@ -73,35 +96,39 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
                     to: new Date(e.target.value),
                   })
                 }
-                className="text-sm"
+                className={`text-sm ${!hasFeatureAccess ? "cursor-pointer" : ""}`}
+                disabled={!hasFeatureAccess}
+                onClick={!hasFeatureAccess ? onFeatureRequest : undefined}
               />
             </div>
             <div className="flex items-end gap-2">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
+                onClick={hasFeatureAccess ? () => {
                   const now = new Date();
                   const thirtyDaysAgo = new Date(
                     now.getTime() - 30 * 24 * 60 * 60 * 1000
                   );
                   onDateRangeChange({ from: thirtyDaysAgo, to: now });
-                }}
-                className="text-xs"
+                } : onFeatureRequest}
+                disabled={!hasFeatureAccess}
+                className={`text-xs ${!hasFeatureAccess ? "cursor-pointer" : ""}`}
               >
                 Last 30 days
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
+                onClick={hasFeatureAccess ? () => {
                   const now = new Date();
                   const ninetyDaysAgo = new Date(
                     now.getTime() - 90 * 24 * 60 * 60 * 1000
                   );
                   onDateRangeChange({ from: ninetyDaysAgo, to: now });
-                }}
-                className="text-xs"
+                } : onFeatureRequest}
+                disabled={!hasFeatureAccess}
+                className={`text-xs ${!hasFeatureAccess ? "cursor-pointer" : ""}`}
               >
                 Last 90 days
               </Button>

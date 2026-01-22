@@ -29,6 +29,7 @@ import {
 import { exportAuthorizationsToCSV } from "@/utils/csv-export";
 import AnalyticsContainer from "./AnalyticsContainer";
 import ExportModal from "./ExportModal";
+import FeatureRequestSheet from "./FeatureRequestSheet";
 import {
   Search,
   Download,
@@ -45,6 +46,10 @@ interface AuthorizationsPageProps {
 const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
   onNavigateToDetail,
 }) => {
+  // Role switcher for presentation (demo purposes)
+  const [userRole, setUserRole] = useState<"with-access" | "without-access">("without-access");
+  const hasFeatureAccess = userRole === "with-access";
+
   const [state, setState] = useState<AuthorizationsPageState>({
     selectedItems: [],
     filters: {
@@ -55,10 +60,11 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
     searchTerm: "",
     sortBy: "created",
     sortOrder: "desc",
-    chartDateRange: getDateRange(90),
+    chartDateRange: getDateRange(hasFeatureAccess ? 90 : 7),
   });
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isFeatureRequestSheetOpen, setIsFeatureRequestSheetOpen] = useState(false);
 
   // Get unique values for filters
   const workspaces = [...new Set(authorizations.map((auth) => auth.workspace))];
@@ -191,6 +197,15 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
     }));
   };
 
+  const handleFeatureRequest = (data: { email: string; notes: string }) => {
+    console.log("Feature request submitted:", data);
+    // In production, this would send to an API
+  };
+
+  const handleOpenFeatureRequest = () => {
+    setIsFeatureRequestSheetOpen(true);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Connected":
@@ -227,6 +242,30 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
+      {/* Role Switcher - Fixed in top-right corner */}
+      <div className="fixed top-6 right-6 z-50">
+        <Select value={userRole} onValueChange={(value: "with-access" | "without-access") => {
+          setUserRole(value);
+          // Update date range when role changes
+          setState((prev) => ({
+            ...prev,
+            chartDateRange: getDateRange(value === "with-access" ? 90 : 7),
+          }));
+        }}>
+          <SelectTrigger className="w-64 bg-white shadow-lg border-2">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="with-access">
+              👤 User with Feature Access
+            </SelectItem>
+            <SelectItem value="without-access">
+              🔒 User without Feature Access
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-medium text-gray-900">Authorizations</h1>
@@ -241,6 +280,8 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
         entityChanges={entityChanges}
         dateRange={state.chartDateRange}
         onDateRangeChange={handleChartDateRangeChange}
+        hasFeatureAccess={hasFeatureAccess}
+        onFeatureRequest={handleOpenFeatureRequest}
       />
 
       <div className="flex-col">
@@ -555,6 +596,13 @@ const AuthorizationsPage: React.FC<AuthorizationsPageProps> = ({
         onClose={() => setIsExportModalOpen(false)}
         entityChanges={entityChanges}
         title="Export Entity Changes"
+      />
+
+      {/* Feature Request Sheet */}
+      <FeatureRequestSheet
+        isOpen={isFeatureRequestSheetOpen}
+        onClose={() => setIsFeatureRequestSheetOpen(false)}
+        onSubmit={handleFeatureRequest}
       />
     </div>
   );
